@@ -27,7 +27,12 @@ const DetailContent = (props) => {
         </div>
       </div>
       <h1 className='title my-4'>Table of Contents</h1>
-      <TextArea rows={6} allowClear onChange={onChangeTextArea} />
+      <TextArea
+        rows={6}
+        allowClear
+        onChange={onChangeTextArea}
+        style={{ border: "1px solid #B9B3B3" }}
+      />
     </Modal>
   );
 };
