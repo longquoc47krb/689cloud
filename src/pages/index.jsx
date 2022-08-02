@@ -12,6 +12,30 @@ const Content = ({ data, currentPage, onPageChanged, ...props }) => {
         data={data}
       />
       <div>
+        {viewMode === "list" ? (
+          <div>
+            {data.map((item) => (
+              <ListView
+                key={item.id}
+                title={item.userId}
+                author={item.userId}
+                description={item.title}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className='grid grid-cols-4'>
+            {data.map((item) => (
+              <TileView
+                key={item.id}
+                title={item.userId}
+                author={item.userId}
+              />
+            ))}
+          </div>
+        )}
+
+        {/*         
         {data.map((item) => {
           if (viewMode === "list") {
             return (
@@ -31,7 +55,7 @@ const Content = ({ data, currentPage, onPageChanged, ...props }) => {
               />
             );
           }
-        })}
+        })} */}
       </div>
     </div>
   );
