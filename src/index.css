@@ -27,6 +27,12 @@ code {
   .title {
     @apply text-black font-bold text-2xl;
   }
+  .view-button {
+    @apply font-bold text-lg text-white flex mx-auto items-center gap-x-2 rounded p-2;
+  }
+  .view-button-tile {
+    @apply font-bold text-lg text-white rounded p-2;
+  }
 }
 #authentication-text {
   position: relative;
