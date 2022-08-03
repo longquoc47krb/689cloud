@@ -103,5 +103,20 @@ function DatePicker(props) {
     </>
   );
 }
-
-export { Input, InputGroup, InputPassword, DatePicker };
+function InputSearchField(props) {
+  const { label, value, onChange, name } = props;
+  return (
+    <>
+      <div style={{ width: "auto", display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+        <label className='text-sm font-bold'>{label}</label>
+        <AntdInput
+          className='w-[400px]'
+          name={name}
+          value={value}
+          onChange={onChange}
+        />
+      </div>
+    </>
+  );
+}
+export { Input, InputGroup, InputPassword, DatePicker, InputSearchField };

@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "~antd/dist/antd.css";
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
@@ -14,29 +15,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
 @layer components {
   .input-label {
     @apply text-[#73879C] font-medium text-lg;
   }
+
   .button {
     @apply px-10 py-2 font-bold;
   }
+
   .errors {
     @apply text-red-600 font-medium text-sm;
   }
+
   .title {
     @apply text-black font-bold text-2xl;
   }
+
   .view-button {
     @apply font-bold text-lg text-white flex mx-auto items-center gap-x-2 rounded p-2;
   }
+
   .view-button-tile {
     @apply font-bold text-lg text-white rounded p-2;
   }
+
+  .pagination {
+    @apply w-[30rem] pt-8
+  }
+
+  .pagination-button {
+    @apply w-[3.5rem] h-10 bg-[#576570] rounded-2xl text-center;
+
+  }
 }
+
 #authentication-text {
   position: relative;
 }
+
 #authentication-text:after {
   position: absolute;
   content: "";
@@ -46,6 +64,7 @@ code {
   margin-left: 1rem;
   top: 50%;
 }
+
 .ant-modal-header {
   background: #83889c !important;
   height: 100%;
