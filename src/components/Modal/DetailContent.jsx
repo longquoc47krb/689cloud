@@ -3,10 +3,11 @@ import TextArea from "antd/lib/input/TextArea";
 import React from "react";
 import { BsFillBookFill } from "react-icons/bs";
 const DetailContent = (props) => {
-  const { visible, onChangeTextArea, selectedItem } = props;
+  const { visible, handleCancel, onChangeTextArea, selectedItem } = props;
   // const { photo, title, author, gen, publisher, group, genre } = children;
   return (
     <Modal
+      onCancel={handleCancel}
       visible={visible}
       footer={
         <div className='w-full'>

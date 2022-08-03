@@ -19,7 +19,6 @@ function App() {
   const [viewMode, setViewMode] = useState("list");
   const [filterType, setFilterType] = useState([]);
   const [keyword, setKeyword] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [filterPage, setFilterPage] = useState({
     _limit: 8,
@@ -93,6 +92,10 @@ function App() {
   const handleShowDetailSearch = () => {
     setDropdown(!dropdown);
   }
+  // show Details
+  const handleShowDetail = () => {
+    console.log("id")
+  }
   return (
     <div className='bg-[#E2E2E2] h-full w-full min-h-screen'>
       <Header />
@@ -104,7 +107,7 @@ function App() {
           onChange={onTextChange}
           onPressEnter={handlePressEnter} />
         <Switch
-          className="bg-[#72D498] absolute top-[47px] right-[500px]"
+          className="bg-[#72D498] absolute top-[47px] right-[500px] z-40"
           checkedChildren={<AiOutlineUnorderedList />}
           checked={viewMode === "list"}
           unCheckedChildren={<SiTile />}
@@ -112,8 +115,8 @@ function App() {
           onChange={handleSwitchViewMode}
         />
       </div>
-      <div className="w-[650px] flex justify-start mx-auto mb-5"><p className="text-sm font-bold flex items-center " onClick={handleShowDetailSearch}>Detail search {dropdown ? <AiFillCaretDown /> : <AiFillCaretUp />}</p></div>
-      {dropdown && <div className="flex justify-center mb-5">
+      <div className="w-[650px] flex justify-start mx-auto mb-5 relative"><p className="text-sm font-bold flex items-center " onClick={handleShowDetailSearch}>Detail search {dropdown ? <AiFillCaretDown /> : <AiFillCaretUp />}</p></div>
+      {dropdown && <div className="flex justify-center mb-5 rotateMenuDown">
         <DetailSearch />
       </div>}
       <div className="flex justify-center mb-5">
@@ -122,7 +125,7 @@ function App() {
       <div className='flex justify-center'>
         <Content data={data} currentPage={currentPage} viewMode={viewMode} />
       </div>
-      <DetailContent visible={modalOpen} selected={selected} />
+
 
     </div>
   );

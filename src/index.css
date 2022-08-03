@@ -30,7 +30,7 @@ code {
   }
 
   .title {
-    @apply text-black font-bold text-2xl;
+    @apply text-black font-bold text-base;
   }
 
   .view-button {
@@ -68,4 +68,23 @@ code {
 .ant-modal-header {
   background: #83889c !important;
   height: 100%;
+}
+
+.rotateMenuDown {
+  animation: rotateMenuDown 400ms ease-in-out forwards;
+  transform-origin: top center
+}
+
+@keyframes rotateMenuDown {
+  0% {
+    transform: rotateX(-90deg)
+  }
+
+  70% {
+    transform: rotateX(20deg)
+  }
+
+  100% {
+    transform: rotateX(0deg)
+  }
 }

@@ -3,6 +3,7 @@ import React from "react";
 import { BsFillBookFill, BsFillInfoCircleFill } from "react-icons/bs";
 const ListView = ({ photo, title, author, description, ...props }) => {
   const { onShowDetails, onDisplayBook } = props;
+
   return (
     <div className='w-[752px] bg-white rounded p-[18px] flex gap-x-3 mb-3'>
       <img className='w-[94px] h-[71px]' src={photo} />
