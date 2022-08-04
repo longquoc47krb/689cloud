@@ -21,12 +21,24 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [dropdown, setDropdown] = useState(false);
   const [filterPage, setFilterPage] = useState({
-    _limit: 8,
+    _limit: 4,
     _page: 1
   })
   const { _limit, _page } = filterPage;
   const handleSwitchViewMode = (switchValue) => {
     setViewMode(switchValue ? "list" : "tile");
+    if (viewMode === "list") {
+      setFilterPage({
+        ...filterPage,
+        _limit: 8
+      })
+    }
+    else {
+      setFilterPage({
+        ...filterPage,
+        _limit: 4
+      })
+    }
     console.log("viewMode", viewMode);
   }
   // total item for pagination 
@@ -92,10 +104,6 @@ function App() {
   const handleShowDetailSearch = () => {
     setDropdown(!dropdown);
   }
-  // show Details
-  const handleShowDetail = () => {
-    console.log("id")
-  }
   return (
     <div className='bg-[#E2E2E2] h-full w-full min-h-screen'>
       <Header />
@@ -120,13 +128,11 @@ function App() {
         <DetailSearch />
       </div>}
       <div className="flex justify-center mb-5">
-        <Pagination total={totalItems.length} currentPage={1} onChangePage={onPageChange} />
+        <Pagination total={totalItems.length} currentPage={1} onChangePage={onPageChange} pageSize={filterPage._limit} />
       </div>
       <div className='flex justify-center'>
         <Content data={data} currentPage={currentPage} viewMode={viewMode} />
       </div>
-
-
     </div>
   );
 }
