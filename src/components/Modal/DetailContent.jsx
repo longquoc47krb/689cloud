@@ -2,12 +2,13 @@ import { Image, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React from "react";
 import { BsFillBookFill } from "react-icons/bs";
+import { FiZap } from 'react-icons/fi';
 const DetailContent = (props) => {
-  const { visible, handleCancel, onChangeTextArea, selectedItem } = props;
+  const { visible, onCancel, onChangeTextArea, selectedItem } = props;
   // const { photo, title, author, gen, publisher, group, genre } = children;
   return (
     <Modal
-      onCancel={handleCancel}
+      onCancel={onCancel}
       visible={visible}
       footer={
         <div className='w-full'>
@@ -17,14 +18,14 @@ const DetailContent = (props) => {
         </div>
       }>
       <div className='flex gap-x-6'>
-        <Image className='w-[266px]' src={selectedItem?.photo} />
+        <Image className='w-[266px] h-auto' src={selectedItem?.image} />
         <div>
-          <h1 className='title'>{selectedItem?.title}</h1>
-          <h1 className='title'>{selectedItem?.author}</h1>
-          <h1 className='title'>{selectedItem?.gen}</h1>
-          <h1 className='title'>{selectedItem?.publisher}</h1>
-          <h1 className='title'>{selectedItem?.group}</h1>
-          <h1 className='title'>{selectedItem?.genre}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.title}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.author}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.gen}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.publisher}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.group}</h1>
+          <h1 className='text-wrap font-semibold text-lg mb-2 border-b-[#d0d0d0] border-b-2' style={{ display: "-webkit-flex", WebkitLineClamp: 1, lineClamp: 1, WebkitBoxOrient: "vertical" }}>{selectedItem?.genre}</h1>
         </div>
       </div>
       <h1 className='title my-4'>Table of Contents</h1>
@@ -37,5 +38,6 @@ const DetailContent = (props) => {
     </Modal>
   );
 };
+
 
 export default DetailContent;

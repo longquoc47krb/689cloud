@@ -2,7 +2,6 @@ import React from 'react'
 import { Pagination as AntdPagination } from 'antd';
 const Pagination = (props) => {
     const { total, currentPage, onChangePage, pageSize } = props;
-    console.log('pagination props', props)
     return (
         <div>
             {

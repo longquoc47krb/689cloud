@@ -4,7 +4,7 @@ import { FastField, FormikProvider, useFormik } from "formik";
 import { Input, InputGroup, InputPassword } from "../Input";
 import { validateAccountSettings } from "../../middlewares/validates";
 const AccountSettings = (props) => {
-  const { visible } = props;
+  const { visible, onCancel } = props;
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -16,10 +16,11 @@ const AccountSettings = (props) => {
     validationSchema: validateAccountSettings,
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values) => {},
+    onSubmit: (values) => { },
   });
   return (
     <Modal
+      onCancel={onCancel}
       title={
         <div className='bg-[#83889C] w-full py-2'>
           <span className='text-2xl font-bold text-white'>
@@ -32,7 +33,7 @@ const AccountSettings = (props) => {
       width={1000}
       footer={
         <div className='w-full flex justify-end gap-x-5'>
-          <button className='button text-[#73879C] border-[#73879C] border-solid border-t-2 border-r-2 border-b-2 border-l-2'>
+          <button onClick={onCancel} className='button text-[#73879C] border-[#73879C] border-solid border-t-2 border-r-2 border-b-2 border-l-2'>
             CANCEL
           </button>
           <button className='button text-white bg-[#73879C] border-[#73879C] border-solid border-t-2 border-r-2 border-b-2 border-l-2'>

@@ -33,8 +33,20 @@ code {
     @apply text-black font-bold text-base;
   }
 
+  .text-wrap {
+    @apply text-sm text-ellipsis overflow-hidden;
+  }
+
   .view-button {
     @apply font-bold text-lg text-white flex mx-auto items-center gap-x-2 rounded p-2;
+  }
+
+  .view-button-mobile {
+    @apply font-bold text-sm text-white flex mx-auto items-center gap-x-1 rounded p-2;
+  }
+
+  .view-button-tablet {
+    @apply font-bold text-base text-white flex mx-auto items-center gap-x-1 rounded p-2;
   }
 
   .view-button-tile {
@@ -49,6 +61,7 @@ code {
     @apply w-[3.5rem] h-10 bg-[#576570] rounded-2xl text-center;
 
   }
+
 }
 
 #authentication-text {

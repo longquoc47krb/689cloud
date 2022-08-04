@@ -104,13 +104,13 @@ function DatePicker(props) {
   );
 }
 function InputSearchField(props) {
-  const { label, value, onChange, name } = props;
+  const { label, value, onChange, name, className } = props;
   return (
     <>
-      <div style={{ width: "auto", display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+      <div className={className}>
         <label className='text-sm font-bold'>{label}</label>
         <AntdInput
-          className='w-[400px]'
+          className='tablet:w-[85vw] mobile:w-[70vw] laptop:w-[35vw]'
           name={name}
           value={value}
           onChange={onChange}
