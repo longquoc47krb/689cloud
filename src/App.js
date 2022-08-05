@@ -14,20 +14,12 @@ import DetailSearch from "./components/DetailSearch";
 import postServices from "./services/postServices";
 function App() {
   const [data, setData] = useState([]);
-  const [selected, setSelected] = useState({});
+  const [paginationData, setPaginationData] = useState([]);
   const [accountModalShow, setAccountModalShow] = useState(false);
   const [totalItems, setTotalItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState("list");
-  const [filterType, setFilterType] = useState({
-    title: "",
-    author: "",
-    publisher: "",
-    published_date: null,
-    group: "",
-    genre: ""
-
-  });
+  const [filterType, setFilterType] = useState({});
   const [keyword, setKeyword] = useState("");
   const [dropdown, setDropdown] = useState(false);
   const [filterPage, setFilterPage] = useState({
@@ -56,28 +48,23 @@ function App() {
   useEffect(() => {
     const fetchTotalItems = async () => {
       const res = await postServices.getAll();
-      setTotalItems(res);
+      setPaginationData(res)
     };
     fetchTotalItems();
   }, []);
   useEffect(() => {
     const fetchAllItems = async () => {
-      let res = null;
-      const parameterPage = queryString.stringify(filterPage)
-      const parameterType = queryString.stringify(filterType, { skipNull: true, skipEmptyString: true })
-      console.log('paraparams', parameterType)
-      if (checkUndefiedObject(filterType)) {
+      let res;
+      if (filterType.length < 0) {
         res = await postServices.getAll();
-      } else {
+      }
+      else {
         res = await postServices.getByFilter(filterPage, filterType)
       }
       setData(res);
-      console.log('data', data)
-      console.log(`http://localhost:8000/posts?${parameterType}&${parameterPage}`)
-      console.log("check undefied filter", checkUndefiedObject(filterType));
     };
     fetchAllItems();
-
+    console.log('filterPage', filterPage);
   }, [filterPage, filterType]);
   const onPageChange = (e) => {
     setFilterPage({
@@ -124,7 +111,6 @@ function App() {
       _page: 1
     })
     console.log("filter onSelectGenre", filterType);
-
   }
   const onSelectGroup = (value) => {
     setFilterType({
@@ -133,18 +119,17 @@ function App() {
     })
     console.log("filter onSelectGroup", filterType);
   }
-  function checkUndefiedObject(obj) {
-    if (!obj.genre && !obj.group) return false;
-    return true;
-  }
-
   function showDetailSearch(dropdown) {
     if (dropdown) return (<div className="flex justify-center mb-5 rotateMenuDown">
       <DetailSearch onSelectGroup={onSelectGroup} onSelectGenre={onSelectGenre} />
     </div>)
     return;
   }
+  function isEmptyObject(obj) {
+    return JSON.stringify(obj) === '{}';
 
+  }
+  console.log(isEmptyObject, isEmptyObject(filterType));
   return (
     <div className='bg-[#E2E2E2] laptop:h-[100vh] mobile:h-[200vh] laptop:max-h-[500vw] max-w-[500vw] w-full'>
       <Header onShowAccountSettings={() => setAccountModalShow(true)} />
@@ -170,7 +155,7 @@ function App() {
       <div className="w-[650px] flex justify-start mx-auto mb-5 relative"></div>
       {showDetailSearch(dropdown)}
       <div className="flex justify-center mb-5">
-        <Pagination total={checkUndefiedObject(filterType) ? data.length : totalItems.length} currentPage={1} onChangePage={onPageChange} pageSize={filterPage._limit} />
+        <Pagination total={!isEmptyObject(filterType) ? data.length : paginationData.length} currentPage={1} onChangePage={onPageChange} pageSize={filterPage._limit} />
       </div>
       <div className='flex justify-center'>
         <Content data={data} currentPage={currentPage} viewMode={viewMode} />
