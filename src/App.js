@@ -46,21 +46,15 @@ function App() {
   }
   // total item for pagination 
   useEffect(() => {
-    const fetchTotalItems = async () => {
+    const fetchPaginationData = async () => {
       const res = await postServices.getAll();
       setPaginationData(res)
     };
-    fetchTotalItems();
+    fetchPaginationData();
   }, []);
   useEffect(() => {
     const fetchAllItems = async () => {
-      let res;
-      if (filterType.length < 0) {
-        res = await postServices.getAll();
-      }
-      else {
-        res = await postServices.getByFilter(filterPage, filterType)
-      }
+      const res = await postServices.getByFilter(filterPage, filterType)
       setData(res);
     };
     fetchAllItems();
