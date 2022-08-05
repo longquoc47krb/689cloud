@@ -6,6 +6,7 @@ import { InputSearchField } from '../Input';
 import Proptypes from "prop-types";
 import axios from 'axios';
 import Select from '../Select';
+import postServices from '../../services/postServices';
 const { RangePicker } = DatePicker;
 const DetailSearch = (props) => {
     const { onSelectGenre, onSelectGroup, handleDateChange, onSearch } = props;
@@ -19,12 +20,12 @@ const DetailSearch = (props) => {
     // }
     useEffect(() => {
         const fetchTotalGenre = async () => {
-            const res = await axios.get('http://localhost:8000/posts');
+            const res = await postServices.getAll();
             // filter genre from an array of object. Just get value from key 'genre'
             // step by step:   let result = res.data;
             //                 let array = result.map({key} => key)
-            setGenreData([...new Set((res.data).map(({ genre }) => genre))])
-            setGroupData([...new Set((res.data).map(({ group }) => group))])
+            setGenreData([...new Set((res).map(({ genre }) => genre))])
+            setGroupData([...new Set((res).map(({ group }) => group))])
         };
         fetchTotalGenre();
     }, [])

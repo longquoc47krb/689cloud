@@ -11,6 +11,7 @@ import Content from "./components/Content";
 import { DetailContent, AccountSettings } from "./components/Modal";
 import Search from "./components/Search";
 import DetailSearch from "./components/DetailSearch";
+import postServices from "./services/postServices";
 function App() {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState({});
@@ -54,8 +55,8 @@ function App() {
   // total item for pagination 
   useEffect(() => {
     const fetchTotalItems = async () => {
-      const res = await axios.get('http://localhost:8000/posts');
-      setTotalItems(res.data);
+      const res = await postServices.getAll();
+      setTotalItems(res);
     };
     fetchTotalItems();
   }, []);
@@ -66,11 +67,11 @@ function App() {
       const parameterType = queryString.stringify(filterType, { skipNull: true, skipEmptyString: true })
       console.log('paraparams', parameterType)
       if (checkUndefiedObject(filterType)) {
-        res = await axios.get('http://localhost:8000/posts');
+        res = await postServices.getAll();
       } else {
-        res = await axios.get(`http://localhost:8000/posts?${parameterType}&${parameterPage}`);
+        res = await postServices.getByFilter(filterPage, filterType)
       }
-      setData(res.data);
+      setData(res);
       console.log('data', data)
       console.log(`http://localhost:8000/posts?${parameterType}&${parameterPage}`)
       console.log("check undefied filter", checkUndefiedObject(filterType));
