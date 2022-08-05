@@ -65,13 +65,15 @@ function App() {
       const parameterPage = queryString.stringify(filterPage)
       const parameterType = queryString.stringify(filterType, { skipNull: true, skipEmptyString: true })
       console.log('paraparams', parameterType)
-      if (filterType.length < 0) {
+      if (checkUndefiedObject(filterType)) {
         res = await axios.get('http://localhost:8000/posts');
       } else {
         res = await axios.get(`http://localhost:8000/posts?${parameterType}&${parameterPage}`);
       }
       setData(res.data);
+      console.log('data', data)
       console.log(`http://localhost:8000/posts?${parameterType}&${parameterPage}`)
+      console.log("check undefied filter", checkUndefiedObject(filterType));
     };
     fetchAllItems();
 
@@ -118,9 +120,10 @@ function App() {
     })
     setFilterPage({
       ...filterPage,
-      page: 1
+      _page: 1
     })
     console.log("filter onSelectGenre", filterType);
+
   }
   const onSelectGroup = (value) => {
     setFilterType({
@@ -140,9 +143,9 @@ function App() {
     </div>)
     return;
   }
-  console.log("check undefied filter", checkUndefiedObject(filterType));
+
   return (
-    <div className='bg-[#E2E2E2] laptop:h-full mobile:h-[200vh] laptop:max-h-[500vw] max-w-[500vw] w-full'>
+    <div className='bg-[#E2E2E2] laptop:h-[100vh] mobile:h-[200vh] laptop:max-h-[500vw] max-w-[500vw] w-full'>
       <Header onShowAccountSettings={() => setAccountModalShow(true)} />
 
       <div className="flex justify-center my-5">
