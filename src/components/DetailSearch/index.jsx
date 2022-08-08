@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { FastField } from 'formik'
-import { Form, Col, Row, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import moment from 'moment';
-import { InputSearchField } from '../Input';
 import Proptypes from "prop-types";
-import axios from 'axios';
-import Select from '../Select';
+import React, { useEffect, useState } from 'react';
+import httpRequest from '../../services/api/httpRequest';
 import postServices from '../../services/postServices';
+import { InputSearchField } from '../Input';
+import Select from '../Select';
 const { RangePicker } = DatePicker;
 const DetailSearch = (props) => {
     const { onSelectGenre, onSelectGroup, handleDateChange, onSearch } = props;
@@ -20,7 +19,10 @@ const DetailSearch = (props) => {
     // }
     useEffect(() => {
         const fetchTotalGenre = async () => {
-            const res = await postServices.getAll();
+            const res = await httpRequest({
+                url: '/posts',
+                method: 'GET'
+            })
             // filter genre from an array of object. Just get value from key 'genre'
             // step by step:   let result = res.data;
             //                 let array = result.map({key} => key)

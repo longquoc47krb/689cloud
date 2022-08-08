@@ -10,9 +10,6 @@ const Content = (props) => {
   const { data, viewMode } = props;
   const [selected, setSelected] = useState({})
   const [modalOpen, setModalOpen] = useState(false)
-  const onShowDetails = () => {
-
-  }
   const renderByViewType = (viewMode, data) => {
     if (viewMode === 'list') {
       return (
@@ -46,7 +43,6 @@ const Content = (props) => {
               onShowDetails={() => {
                 setSelected(item);
                 setModalOpen(true)
-                console.log('selected', selected)
               }}
               onDisplayBook={() => console.log("item", item)}
             />

@@ -1,22 +1,20 @@
-import { Switch, Empty } from "antd";
-import axios from "axios";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
-import queryString from 'query-string';
+import { Empty, Switch } from "antd";
 import { useEffect, useState } from "react";
-import { AiOutlineUnorderedList } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiOutlineUnorderedList } from "react-icons/ai";
 import { SiTile } from "react-icons/si";
-import Header from "./components/Header";
-import Pagination from "./components/Pagination";
 import Content from "./components/Content";
-import { DetailContent, AccountSettings } from "./components/Modal";
-import Search from "./components/Search";
 import DetailSearch from "./components/DetailSearch";
+import Header from "./components/Header";
+import { AccountSettings } from "./components/Modal";
+import Pagination from "./components/Pagination";
+import Search from "./components/Search";
+import httpRequest from "./services/api/httpRequest";
 import postServices from "./services/postServices";
+import queryString from 'query-string';
 function App() {
   const [data, setData] = useState([]);
-  const [paginationData, setPaginationData] = useState([]);
+  const [rawData, setRawData] = useState([]);
   const [accountModalShow, setAccountModalShow] = useState(false);
-  const [totalItems, setTotalItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState("list");
   const [filterType, setFilterType] = useState({});
@@ -41,24 +39,30 @@ function App() {
         _limit: 4
       })
     }
-    console.log('filterPage', filterPage)
 
   }
   // total item for pagination 
   useEffect(() => {
-    const fetchPaginationData = async () => {
-      const res = await postServices.getAll();
-      setPaginationData(res)
+    const fetchRawData = async () => {
+      const res = await httpRequest({
+        url: '/posts',
+        method: 'GET'
+      }) 
+      setRawData(res)
     };
-    fetchPaginationData();
+    fetchRawData();
   }, []);
   useEffect(() => {
     const fetchAllItems = async () => {
-      const res = await postServices.getByFilter(filterPage, filterType)
+      const pageParams = queryString.stringify(filterPage)
+      const filterParams = queryString.stringify(filterType, { skipNull: true, skipEmptyString: true })
+      const res = await httpRequest({
+        url: `/posts?${pageParams}&${filterParams}`,
+        method: 'GET',
+      })
       setData(res);
     };
     fetchAllItems();
-    console.log('filterPage', filterPage);
   }, [filterPage, filterType]);
   const onPageChange = (e) => {
     setFilterPage({
@@ -70,7 +74,6 @@ function App() {
   const onTextChange = (value) => {
     if (value === "") {
       setFilterType(null);
-      console.log("filter when input clear", filterType);
     }
     setKeyword(value);
 
@@ -78,15 +81,12 @@ function App() {
 
   const suggestionSelected = (value) => {
     setKeyword(value);
-    console.log("value when selected", value);
     setFilterType({
       ...filterType,
       title: value
     });
-    console.log("filter selected", filterType);
   };
   const handlePressEnter = (value) => {
-    console.log("handlePressEnter", value);
     setFilterType({
       ...filterType,
       title: keyword
@@ -100,18 +100,28 @@ function App() {
       ...filterType,
       genre: value
     })
-    setFilterPage({
-      ...filterPage,
-      _page: 1
-    })
-    console.log("filter onSelectGenre", filterType);
+    if (viewMode === "list") {
+      setFilterPage({
+        _limit: 4,
+        _page: 1
+      })
+    }
+    else {
+      setFilterPage({
+        _limit: 8,
+        _page: 1
+      })
+    }
+    console.log('filter page', filterPage);
+    console.log('filter type', filterType);
+
+
   }
   const onSelectGroup = (value) => {
     setFilterType({
       ...filterType,
       group: value
     })
-    console.log("filter onSelectGroup", filterType);
   }
   function showDetailSearch(dropdown) {
     if (dropdown) return (<div className="flex justify-center mb-5 rotateMenuDown">
@@ -123,7 +133,6 @@ function App() {
     return JSON.stringify(obj) === '{}';
 
   }
-  console.log(isEmptyObject, isEmptyObject(filterType));
   return (
     <div className='bg-[#E2E2E2] laptop:h-[100vh] mobile:h-[200vh] laptop:max-h-[500vw] max-w-[500vw] w-full'>
       <Header onShowAccountSettings={() => setAccountModalShow(true)} />
@@ -131,7 +140,7 @@ function App() {
       <div className="flex justify-center my-5">
         <div className="relative">
           <Search
-            dataSource={totalItems}
+            dataSource={rawData}
             onSelect={suggestionSelected}
             onChange={onTextChange}
             onPressEnter={handlePressEnter} />
@@ -149,7 +158,7 @@ function App() {
       <div className="w-[650px] flex justify-start mx-auto mb-5 relative"></div>
       {showDetailSearch(dropdown)}
       <div className="flex justify-center mb-5">
-        <Pagination total={!isEmptyObject(filterType) ? data.length : paginationData.length} currentPage={1} onChangePage={onPageChange} pageSize={filterPage._limit} />
+        <Pagination total={!isEmptyObject(filterType) ? data.length : rawData.length} currentPage={1} onChangePage={onPageChange} pageSize={filterPage._limit} />
       </div>
       <div className='flex justify-center'>
         <Content data={data} currentPage={currentPage} viewMode={viewMode} />
