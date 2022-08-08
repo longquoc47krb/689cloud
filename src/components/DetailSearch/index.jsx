@@ -3,7 +3,6 @@ import moment from 'moment';
 import Proptypes from "prop-types";
 import React, { useEffect, useState } from 'react';
 import httpRequest from '../../services/api/httpRequest';
-import postServices from '../../services/postServices';
 import { InputSearchField } from '../Input';
 import Select from '../Select';
 const { RangePicker } = DatePicker;

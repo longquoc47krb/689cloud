@@ -2,7 +2,6 @@ import { Image, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React from "react";
 import { BsFillBookFill } from "react-icons/bs";
-import { FiZap } from 'react-icons/fi';
 const DetailContent = (props) => {
   const { visible, onCancel, onChangeTextArea, selectedItem } = props;
   // const { photo, title, author, gen, publisher, group, genre } = children;

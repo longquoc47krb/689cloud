@@ -6,9 +6,7 @@ import {
   Typography,
 } from "antd";
 import { ErrorMessage } from "formik";
-import moment from "moment";
 import React from "react";
-const { label } = Typography;
 const { Item } = Form;
 function Input(props) {
   const { field, placeholder, label } = props;

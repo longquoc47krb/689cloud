@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import moment from "moment";
 export const validateAccountSettings = Yup.object().shape({
   firstName: Yup.string().required("Required").max(64, "Max length 64"),
   lastName: Yup.string().required("Required").max(64, "Max length 64"),

@@ -9,7 +9,6 @@ import { AccountSettings } from "./components/Modal";
 import Pagination from "./components/Pagination";
 import Search from "./components/Search";
 import httpRequest from "./services/api/httpRequest";
-import postServices from "./services/postServices";
 import queryString from 'query-string';
 function App() {
   const [data, setData] = useState([]);
