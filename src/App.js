@@ -25,7 +25,7 @@ function App() {
     console.log("data", data);
   }, []);
   return (
-    <div className='bg-gray-300 w-full h-full'>
+    <div className='bg-black w-full h-full'>
       <h1 className='flex justify-center font-semibold text-3xl'>
         Carousel example
       </h1>

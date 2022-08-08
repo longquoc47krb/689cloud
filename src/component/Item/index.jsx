@@ -1,7 +1,18 @@
 import { Tag } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { DESCRIPTION, GOOGLE_SEARCH_BY_IMAGE } from "../../constants";
 
 const Item = ({ imageSrc, topic, className }) => {
+  const handleClickTag = (value) => {
+    console.log("value", value);
+    window.open(GOOGLE_SEARCH_BY_IMAGE(value));
+  };
+  const [selectedId, setSelectedId] = useState(null);
+  const topicArr = topic.split(",");
+  const selectedTag = topicArr[selectedId];
+  console.log("setSelectedId", selectedId);
+  console.log("selectedTag", selectedTag);
+  handleClickTag(selectedTag);
   return (
     <div className={className}>
       <div className='w-[400px] h-[600px] bg-gray-400 rounded-lg overlay'>
@@ -10,22 +21,16 @@ const Item = ({ imageSrc, topic, className }) => {
           src={imageSrc}
         />
         <div className='absolute bottom-5 p-2'>
-          {topic.map((item, index) => (
-            <Tag style={{ fontSize: "14px" }} key={index} tag={item}>
+          {topicArr.map((item, index) => (
+            <Tag
+              style={{ fontSize: "14px" }}
+              key={index}
+              tag={item}
+              onClick={() => setSelectedId(index)}>
               {item}
             </Tag>
           ))}
-          <p className='paragraph text-white'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
+          <p className='paragraph text-white'>{DESCRIPTION}</p>
         </div>
       </div>
     </div>

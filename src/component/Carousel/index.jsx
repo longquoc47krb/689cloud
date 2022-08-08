@@ -15,7 +15,7 @@ export default function Carousel(props) {
       <div
         style={{
           ...style,
-          color: "black",
+          color: "white",
           fontSize: "4rem",
           lineHeight: "1.5715",
         }}
@@ -31,7 +31,7 @@ export default function Carousel(props) {
       <div
         style={{
           ...style,
-          color: "black",
+          color: "white",
           fontSize: "4rem",
           lineHeight: "1.5715",
         }}
@@ -63,7 +63,7 @@ export default function Carousel(props) {
           <Item
             className='flex justify-center'
             key={i}
-            topic={card.tags.split(",")}
+            topic={card.tags}
             imageSrc={card.largeImageURL}
           />
         ))}

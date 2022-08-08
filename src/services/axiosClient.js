@@ -1,12 +1,12 @@
 import axios from "axios";
-import { REACT_APP_PIXABAY_API, REACT_APP_PIXABAY_KEY } from "../constants";
+// import { REACT_APP_PIXABAY_API, REACT_APP_PIXABAY_KEY } from "../constants";
 const axiosClient = axios.create({
-  baseURL: REACT_APP_PIXABAY_API,
+  baseURL: process.env.REACT_APP_PIXABAY_API,
   headers: {
     "Content-Type": "application/json",
   },
   params: {
-    key: REACT_APP_PIXABAY_KEY,
+    key: process.env.REACT_APP_PIXABAY_KEY,
     image_type: "photo",
     orientation: "vertical",
     per_page: 20,
