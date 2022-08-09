@@ -5,6 +5,7 @@ import Carousel from "./component/Carousel";
 import { Input, Typography } from "antd";
 function App() {
   const [data, setData] = useState([]);
+  const [query, setQuery] = useState("Pet");
   const [keyword, setKeyword] = useState("");
   const handleSearch = (e) => {
     setKeyword(e.target.value);
@@ -15,7 +16,7 @@ function App() {
         url: "",
         method: "GET",
         params: {
-          q: "Barcelona",
+          q: query,
         },
       });
       console.log(response);
@@ -23,7 +24,7 @@ function App() {
     };
     fetchImages();
     console.log("data", data);
-  }, []);
+  }, [query]);
   return (
     <div className='bg-black w-full h-full'>
       <h1 className='flex justify-center font-semibold text-3xl'>

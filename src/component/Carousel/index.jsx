@@ -7,7 +7,7 @@ export default function Carousel(props) {
   const { data, className } = props;
 
   function onChange(a, b, c) {
-    console.log(a, b, c);
+    // console.log(a, b, c);
   }
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -40,11 +40,43 @@ export default function Carousel(props) {
       </div>
     );
   };
+  const responsive = {
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 2 },
+    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+    tablet: { breakpoint: { max: 1024, min: 464 }, items: 1 },
+  };
   const settings = {
     dots: true,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    slidesToShow: 3,
+    responsive: [
+      {
+        breakpoint: 1300,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
+
   return (
     <div className={className}>
       <AntdCarousel

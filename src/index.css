@@ -56,3 +56,7 @@ h1 {
 .image {
   opacity: 0.5;
 }
+.ant-carousel .slick-dots-bottom {
+  position: absolute !important;
+  bottom: -37px !important;
+}

@@ -10,8 +10,6 @@ const Item = ({ imageSrc, topic, className }) => {
   const [selectedId, setSelectedId] = useState(null);
   const topicArr = topic.split(",");
   const selectedTag = topicArr[selectedId];
-  console.log("setSelectedId", selectedId);
-  console.log("selectedTag", selectedTag);
   handleClickTag(selectedTag);
   return (
     <div className={className}>
@@ -23,6 +21,7 @@ const Item = ({ imageSrc, topic, className }) => {
         <div className='absolute bottom-5 p-2'>
           {topicArr.map((item, index) => (
             <Tag
+              className='cursor-pointer'
               style={{ fontSize: "14px" }}
               key={index}
               tag={item}
