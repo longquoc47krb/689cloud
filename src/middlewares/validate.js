@@ -57,10 +57,12 @@ const validateSearchBox = Yup.object().shape({
   // searchFields: Yup.array().string(),
   label: Yup.string().required("Required"),
   operation: Yup.string().required("Required"),
-  matchValues: Yup.object().shape({
-    key: Yup.string().required("Required"),
-    value: Yup.string().required("Required"),
-  }),
+  matchValues: Yup.array().of(
+    Yup.object().shape({
+      key: Yup.string().required("Required"),
+      value: Yup.string().required("Required"),
+    })
+  ),
 });
 
 export {
