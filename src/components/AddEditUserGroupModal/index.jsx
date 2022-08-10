@@ -42,15 +42,7 @@ function AddEditUserGroupModal(props) {
     validateOnBlur: true,
     onSubmit: (values) => {},
   });
-  const {
-    handleChange,
-    values,
-    handleBlur,
-    errors,
-    touched,
-    setFieldValue,
-    setValues,
-  } = formik;
+  const { values, setFieldValue, setValues } = formik;
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);

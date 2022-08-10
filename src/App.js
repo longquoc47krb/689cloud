@@ -4,6 +4,7 @@ import AppLayout from "./layout";
 import Blank from "./pages/Blank";
 import UsersPage from "./pages/Users";
 import UserGroup from "./pages/UserGroup";
+import Messages from "./pages/Messages";
 function App() {
   return (
     <BrowserRouter>
@@ -15,10 +16,7 @@ function App() {
           />
           <Route path='/group' element={<UserGroup />} />
           <Route path='/users' element={<UsersPage />} />
-          <Route
-            path='/messages'
-            element={<Blank name='This is Messenger Management page' />}
-          />
+          <Route path='/messages' element={<Messages />} />
           <Route path='/home' element={<Blank name='This is Dashboard' />} />
           <Route path='*' element={<Navigate to='/users' replace />} />
         </Route>

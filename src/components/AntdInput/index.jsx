@@ -1,17 +1,24 @@
-import { DatePicker, Form, Input, Typography } from "antd";
+import { DatePicker, Form, Input, Select, Typography } from "antd";
 import { ErrorMessage } from "formik";
 import moment from "moment";
 import React from "react";
 const { Text } = Typography;
 const { Item } = Form;
+const { Option } = Select;
 function AntdInput(props) {
-  const { field, placeholder, label } = props;
+  const { field, placeholder, label, width } = props;
   const { value, onChange, onBlur, name } = field;
   return (
     <>
       <Item>
-        <Text strong>{label}</Text>
-        <Input name={name} value={value} onBlur={onBlur} onChange={onChange} />
+        <h1 className='title'>{label}</h1>
+        <Input
+          name={name}
+          value={value}
+          onBlur={onBlur}
+          onChange={onChange}
+          style={{ width: width }}
+        />
         <p className='error-message'>
           <ErrorMessage name={name} />
         </p>
@@ -25,7 +32,7 @@ function AntdInputPassword(props) {
   return (
     <>
       <Item>
-        <Text strong>{label}</Text>
+        <h1 className='title'>{label}</h1>
         <Input.Password
           name={name}
           value={value}
@@ -46,7 +53,7 @@ function AntdDatePicker(props) {
   return (
     <>
       <Item>
-        <Text strong>{label}</Text>
+        <h1 className='title'>{label}</h1>
         <DatePicker
           className='w-full'
           format={dateFormat}
@@ -62,5 +69,38 @@ function AntdDatePicker(props) {
     </>
   );
 }
-
-export { AntdInput, AntdInputPassword, AntdDatePicker };
+function AntdSelect(props) {
+  const { field, label, mode, options, width } = props;
+  const { value, onBlur, name } = field;
+  const handleChange = (value) => {
+    const changeEvent = {
+      target: {
+        name: name,
+        value: value,
+      },
+    };
+    field.onChange(changeEvent);
+  };
+  return (
+    <>
+      <Item>
+        <h1 className='title'>{label}</h1>
+        <Select
+          value={value}
+          onChange={handleChange}
+          style={{ width: width }}
+          mode={mode}>
+          {options.map((item, index) => (
+            <Option key={index + 1} value={item.key}>
+              {item.value}
+            </Option>
+          ))}
+        </Select>
+        <p className='error-message'>
+          <ErrorMessage name={name} />
+        </p>
+      </Item>
+    </>
+  );
+}
+export { AntdInput, AntdInputPassword, AntdDatePicker, AntdSelect };

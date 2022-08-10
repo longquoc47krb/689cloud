@@ -73,3 +73,11 @@ code {
   margin-left: 1rem;
   top: 50%;
 }
+@layer components {
+  .title {
+    @apply text-[#73879C] font-medium text-lg;
+  }
+  .button {
+    @apply font-bold text-lg px-8 py-2;
+  }
+}
