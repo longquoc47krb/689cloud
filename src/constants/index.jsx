@@ -16,6 +16,7 @@ const searchFields = [
     value: "Publisher",
   },
 ];
+
 const operation = [
   {
     key: "PARTIAL_MATCH",
@@ -30,8 +31,15 @@ const operation = [
     value: "Match Multiple Choices",
   },
 ];
+const searchBoxItems = [
+  { key: "SEARCH_BY_AUTHOR", value: "Search by author" },
+  { key: "SEARCH_BY_TITLE", value: "Search by title" },
+  { key: "FILTER_BY_DATE_RANGE", value: "Filter by date range" },
+  { key: "FILTER_BY_GROUP", value: "Filter by group " },
+];
 const constants = {
   searchFields,
   operation,
+  searchBoxItems,
 };
 export default constants;

@@ -23,15 +23,7 @@ const AddEditUserModal = (props) => {
     validationSchema: validateUserForm,
     onSubmit: (values) => {},
   });
-  const {
-    handleChange,
-    values,
-    handleBlur,
-    errors,
-    touched,
-    setFieldValue,
-    setValues,
-  } = formik;
+  const { setValues } = formik;
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);

@@ -88,14 +88,14 @@ const SearchBoxModal = (props) => {
                   </Row>
                   {values.matchValues?.map((_, index) => (
                     <Row gutter={16} className='flex items-center'>
-                      <Col span={11}>
+                      <Col span={10}>
                         <FastField
                           name={`matchValues[${index}].key`}
                           component={AntdInput}
                           label={`Key ${index + 1}`}
                         />
                       </Col>
-                      <Col span={12}>
+                      <Col span={10}>
                         <FastField
                           name={`matchValues[${index}].value`}
                           component={AntdInput}

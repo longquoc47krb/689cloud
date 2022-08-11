@@ -9,6 +9,7 @@ import AntdSearchAutocomplete from "../../components/AntSearchAutocomplete";
 import AntdButton from "../../components/Button";
 import AntdSelect from "../../components/Select";
 import { AntdTable } from "../../components/Table";
+import httpRequest from "../../services/httpRequest";
 function UserGroup(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -107,11 +108,14 @@ function UserGroup(props) {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const res = filter
-        ? await axios.get(`http://localhost:8000/userGroup?name=${filter}`)
-        : await axios.get("http://localhost:8000/userGroup");
-      setData(res.data);
-      console.log("data", data);
+      const res = await httpRequest({
+        url: "/userGroup",
+        method: "GET",
+        params: {
+          name: filter,
+        },
+      });
+      setData(res);
       setLoading(false);
     };
     fetchData();
@@ -120,20 +124,16 @@ function UserGroup(props) {
   const onChange = (value) => {
     if (value === "") {
       setFilter(null);
-      console.log("filter when input clear", filter);
     }
     setKeyword(value);
   };
 
   const suggestionSelected = (value) => {
     setKeyword(value);
-    console.log("value when selected", value);
     setFilter(value);
   };
   const handlePressEnter = (value) => {
-    console.log("handlePressEnter", value);
     setFilter(keyword);
-    console.log("filter value when onSearch", filter);
   };
   return (
     <div className='p-[33px]'>

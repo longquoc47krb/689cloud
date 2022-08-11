@@ -9,6 +9,7 @@ import AntdSearchAutocomplete from "../../components/AntSearchAutocomplete";
 import AntdButton from "../../components/Button";
 import AntdSelect from "../../components/Select";
 import { AntdTable } from "../../components/Table";
+import httpRequest from "../../services/httpRequest";
 function UsersPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -105,12 +106,15 @@ function UsersPage() {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const res = filter
-        ? await axios.get(`http://localhost:8000/users?name=${filter}`)
-        : await axios.get("http://localhost:8000/users");
-      setData(res.data);
+      const res = await httpRequest({
+        url: "/users",
+        method: "GET",
+        params: {
+          name: filter,
+        },
+      });
+      setData(res);
       setLoading(false);
-      console.log("loading", isLoading);
     };
     fetchData();
   }, [filter]);
@@ -118,20 +122,16 @@ function UsersPage() {
   const onChange = (value) => {
     if (value === "") {
       setFilter(null);
-      console.log("filter when input clear", filter);
     }
     setKeyword(value);
   };
 
   const suggestionSelected = (value) => {
     setKeyword(value);
-    console.log("value when selected", value);
     setFilter(value);
   };
   const handlePressEnter = (value) => {
-    console.log("handlePressEnter", value);
     setFilter(keyword);
-    console.log("filter value when onSearch", filter);
   };
   return (
     <div className='p-[33px]'>

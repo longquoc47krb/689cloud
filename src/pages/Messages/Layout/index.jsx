@@ -1,50 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AntdTable } from "./../../../components/Table/index";
-import { Collapse } from "antd";
+import { Collapse, Modal } from "antd";
 import { BiPlusMedical } from "react-icons/bi";
 import TrashIcon from "../../../assets/TrashIcon";
 import EditIcon from "../../../assets/EditIcon";
 import TabLayout from "./Modal/TabLayout";
+import httpRequest from "../../../services/httpRequest";
+import constants from "../../../constants";
 const { Panel } = Collapse;
-const columns = [
-  {
-    title: <h1 className='title'>Title</h1>,
-    dataIndex: "title",
-    render: (title) => <h3>{title}</h3>,
-  },
-  {
-    title: <h1 className='title'>Number of search box</h1>,
-    dataIndex: "numberOfSearchBox",
-    align: "center",
-    render: (numberOfSearchBox) => <h3>{numberOfSearchBox}</h3>,
-  },
-  {
-    title: <h1 className='title'>Action</h1>,
-    render: (record) => {
-      return (
-        <div className='flex'>
-          <div
-            className='cursor-pointer'
-            onClick={() => {
-              //onEdit(record);
-            }}>
-            <EditIcon />
-          </div>
-          <div
-            className='cursor-pointer'
-            onClick={() => {
-              // onDelete(record);
-            }}>
-            <TrashIcon />
-          </div>
-        </div>
-      );
-    },
-  },
-];
+
 const Layout = () => {
+  const [selected, setSelected] = useState({});
   const [openTabLayOutModal, setOpenTabLayOutModal] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
+  const [tabData, setTabData] = useState([]);
+  useEffect(() => {
+    const fetchSearchBox = async () => {
+      const res = await httpRequest({
+        url: "/messages",
+        method: "GET",
+      });
+      setTabData(res[0].tabs);
+    };
+    fetchSearchBox();
+  }, []);
+  const onDelete = (record) => {
+    const title = [
+      `Are you sure, you want to delete `,
+      <span className='text-red-500'>{record.title}</span>,
+      ` ?`,
+    ];
+    Modal.confirm({
+      title: [...title],
+      okText: "OK",
+      okType: "danger",
+      onOk: () => {},
+    });
+  };
+  const onEdit = (record) => {
+    setIsEditting(true);
+    console.log("record: ", record);
+    setSelected(record);
+    console.log("selected", selected);
+  };
+  const columns = [
+    {
+      title: <h1 className='title'>Title</h1>,
+      dataIndex: "title",
+      render: (title) => <h3>{title}</h3>,
+    },
+    {
+      title: <h1 className='title'>Number of search box</h1>,
+      dataIndex: "searchFields",
+      align: "center",
+      render: (searchFields) => <h3>{searchFields.length}</h3>,
+    },
+    {
+      title: <h1 className='title'>Action</h1>,
+      render: (record) => {
+        return (
+          <div className='flex'>
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                onEdit(record);
+                setOpenTabLayOutModal(true);
+              }}>
+              <EditIcon />
+            </div>
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                onDelete(record);
+              }}>
+              <TrashIcon />
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
   return (
     <div className='w-full h-full min-h-[100vh] bg-white p-5 relative'>
       <Collapse defaultActiveKey={["1"]} ghost>
@@ -63,7 +98,10 @@ const Layout = () => {
           <AntdTable
             columns={columns}
             className='mt-5'
-            handleCancel={() => setOpenTabLayOutModal(false)}
+            data={tabData}
+            handleCancel={() => {
+              setOpenTabLayOutModal(false);
+            }}
           />
         </Panel>
       </Collapse>
@@ -77,7 +115,11 @@ const Layout = () => {
       <TabLayout
         title={isEditting ? "EDIT TAB LAYOUT" : "ADD TAB LAYOUT"}
         open={openTabLayOutModal}
-        handleCancel={() => setOpenTabLayOutModal(false)}
+        handleCancel={() => {
+          setOpenTabLayOutModal(false);
+          setSelected({});
+        }}
+        selectedData={selected}
       />
     </div>
   );

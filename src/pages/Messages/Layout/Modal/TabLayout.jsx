@@ -6,70 +6,18 @@ import { AntdInput } from "../../../../components/AntdInput";
 import { IoMdSwap } from "react-icons/io";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuid } from "uuid";
-// drag n drop feature
-const searchBoxItems = [
-  { id: uuid(), content: "Search by author" },
-  { id: uuid(), content: "Search by title" },
-  { id: uuid(), content: "Filter by date range" },
-  { id: uuid(), content: "Filter by group " },
-];
-const selectedSearchBoxItems = [
-  { id: uuid(), content: "Search by publisher" },
-  { id: uuid(), content: "Search by param_1" },
-  { id: uuid(), content: "Filter by genre" },
-  { id: uuid(), content: "Filter by param_2" },
-];
-const SearchBoxBoards = {
-  [uuid()]: {
-    items: searchBoxItems,
-  },
-  [uuid()]: {
-    items: selectedSearchBoxItems,
-  },
-};
+import constants from "../../../../constants";
 
-const onDragEnd = (result, boards, setBoards) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = boards[source.droppableId];
-    const destColumn = boards[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setBoards({
-      ...boards,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-  } else {
-    const board = boards[source.droppableId];
-    const copiedItems = [...board.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setBoards({
-      ...boards,
-      [source.droppableId]: {
-        ...board,
-        items: copiedItems,
-      },
-    });
-  }
-};
+// end drag n drop feature
 const TabLayout = (props) => {
   const { title, open, selectedData, handleCancel } = props;
-  const [boards, setBoards] = useState(SearchBoxBoards);
-  console.log("SearchBoxBoards", SearchBoxBoards);
+  const [boards, setBoards] = useState({});
+  console.log("selectedData", selectedData);
+  // drag n drop feature
+
   const initialValues = {
     title: selectedData?.title ?? "",
+    searchFields: selectedData.searchFields ?? [""],
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -82,7 +30,55 @@ const TabLayout = (props) => {
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
+  const SearchBoxBoards = {
+    1: {
+      items: constants.searchBoxItems,
+    },
+    2: {
+      items: selectedData.searchFields ?? [],
+    },
+  };
+  useEffect(() => {
+    setBoards(SearchBoxBoards);
+  }, [selectedData]);
+  console.log("boards", boards);
+  // drag and drop feature
+  const onDragEnd = (result, boards, setBoards) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
 
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = boards[source.droppableId];
+      const destColumn = boards[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setBoards({
+        ...boards,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const board = boards[source.droppableId];
+      const copiedItems = [...board.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setBoards({
+        ...boards,
+        [source.droppableId]: {
+          ...board,
+          items: copiedItems,
+        },
+      });
+    }
+  };
   return (
     <Modal
       title={title}
@@ -100,14 +96,16 @@ const TabLayout = (props) => {
             name='title'
             width={400}
           />
-          <h1 className='title'>List search box</h1>
+          <div className='flex gap-x-[25rem]'>
+            <h1 className='title'>List search box</h1>
+            <h1 className='title'>Selected search box</h1>
+          </div>
           <div className='flex gap-x-2 justify-between items-center'>
             <DragDropContext
               onDragEnd={(result) => onDragEnd(result, boards, setBoards)}>
               {Object.entries(boards).map(([columnId, board], index) => {
                 return (
                   <div
-                    id={`board-${index}`}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -133,8 +131,8 @@ const TabLayout = (props) => {
                               {board.items.map((item, index) => {
                                 return (
                                   <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
+                                    key={item.key}
+                                    draggableId={item.key}
                                     index={index}>
                                     {(provided, snapshot) => {
                                       return (
@@ -154,7 +152,7 @@ const TabLayout = (props) => {
 
                                             ...provided.draggableProps.style,
                                           }}>
-                                          {item.content}
+                                          {` ${item.value}`}
                                         </div>
                                       );
                                     }}

@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+
 import moment from "moment";
 const validateUserForm = Yup.object().shape({
   name: Yup.string().required("Required").max(64, "Max length 64"),
@@ -51,20 +52,28 @@ const validateUserGroupForm = Yup.object().shape({
   }),
 });
 const validateTabLayout = Yup.object().shape({
+  searchFields: Yup.array().of(Yup.string()),
   title: Yup.string().required("Required"),
 });
 const validateSearchBox = Yup.object().shape({
-  // searchFields: Yup.array().string(),
+  searchFields: Yup.array().required("Required"),
   label: Yup.string().required("Required"),
   operation: Yup.string().required("Required"),
-  matchValues: Yup.array().of(
-    Yup.object().shape({
-      key: Yup.string().required("Required"),
-      value: Yup.string().required("Required"),
-    })
-  ),
+  matchValues: Yup.array()
+    .of(
+      Yup.object().shape({
+        key: Yup.string().required("Required"),
+        value: Yup.string().required("Required"),
+      })
+    )
+    .test("keyTest", "Key needs to be unique", (lists) => {
+      let seen = new Set();
+      var hasDuplicates = lists.some(function (currentObject) {
+        return seen.size === seen.add(currentObject.key).size;
+      });
+      return !hasDuplicates;
+    }),
 });
-
 export {
   validateUserForm,
   validateUserGroupForm,

@@ -3191,5 +3191,61 @@
       "password": "",
       "IPAddresses": []
     }
+  ],
+  "messages": [
+    {
+      "searchBox": [
+        {
+          "id": 1,
+          "label": "SearchBox",
+          "searchFields": ["Title", "Author", "Keywords"],
+          "operation": "Partial match",
+          "matchValues": []
+        },
+        {
+          "id": 2,
+          "label": "Search by author",
+          "searchFields": ["Author"],
+          "operation": "Partial match",
+          "matchValues": []
+        },
+        {
+          "id": 3,
+          "label": "Serch by title",
+          "searchFields": ["Title"],
+          "operation": "Partial match",
+          "matchValues": []
+        }
+      ],
+      "tabs": [
+        {
+          "title": "Tab 1",
+          "searchFields": [
+            {
+              "key": "SEARCH_BY_PARAM_1",
+              "value": "Search by param_1"
+            },
+            {
+              "key": "FILTER_BY_GENRE",
+              "value": "Filter by genre"
+            },
+
+            {
+              "key": "FILTER_BY_PARAM_2",
+              "value": "Filter by parameter_2"
+            }
+          ]
+        },
+        {
+          "title": "Tab 2",
+          "searchFields": [
+            {
+              "key": "SEARCH_BY_PUBLISHER",
+              "value": "Search by publisher"
+            }
+          ]
+        }
+      ]
+    }
   ]
 }
