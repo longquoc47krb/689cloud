@@ -3,7 +3,7 @@ import { EditorState, Modifier } from "draft-js";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PropTypes from "prop-types";
 import { Component } from "react";
-export const EditorComponent = () => (
+export const TextEditor = () => (
   <Editor
     wrapperClassName='h-[200px]'
     editorClassName='border-gray-200 border pl-3'
@@ -26,10 +26,10 @@ export const EditorComponent = () => (
       ],
     }}
     toolbarCustomButtons={[
-      <InsertMentions value='Fullname' />,
-      <InsertMentions value='Password' />,
-      <InsertMentions value='Username' />,
-      <InsertMentions value='Company Name' />,
+      <InsertMentionTag value='Fullname' />,
+      <InsertMentionTag value='Password' />,
+      <InsertMentionTag value='Username' />,
+      <InsertMentionTag value='Company Name' />,
     ]}
     mention={{
       separator: " ",
@@ -43,7 +43,7 @@ export const EditorComponent = () => (
     }}
   />
 );
-const InsertMentions = (props) => {
+const InsertMentionTag = (props) => {
   const { editorState, onChange, value } = props;
   const insert = () => {
     const contentState = Modifier.replaceText(
