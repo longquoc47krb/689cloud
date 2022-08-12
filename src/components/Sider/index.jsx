@@ -3,7 +3,7 @@ import "antd/dist/antd.css";
 import Sider from "antd/lib/layout/Sider";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+const { Item } = Menu;
 const sidebarNavItems = [
   {
     display: "Files Management",
@@ -37,9 +37,9 @@ const SiderBar = () => {
           defaultOpenKeys={["sub1"]}
           style={{ height: "100%", borderRight: 0 }}>
           {sidebarNavItems.map((item, index) => (
-            <Menu.Item key={index} style={{ color: "white" }}>
+            <Item key={index} style={{ color: "white" }}>
               <Link to={item.to}>{item.display}</Link>
-            </Menu.Item>
+            </Item>
           ))}
         </Menu>
       </Sider>

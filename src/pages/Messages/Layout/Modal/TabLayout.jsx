@@ -41,12 +41,10 @@ const TabLayout = (props) => {
   useEffect(() => {
     setBoards(SearchBoxBoards);
   }, [selectedData]);
-  console.log("boards", boards);
   // drag and drop feature
   const onDragEnd = (result, boards, setBoards) => {
     if (!result.destination) return;
     const { source, destination } = result;
-
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = boards[source.droppableId];
       const destColumn = boards[destination.droppableId];
