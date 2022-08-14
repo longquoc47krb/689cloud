@@ -6,7 +6,6 @@ import TrashIcon from "../../../assets/TrashIcon";
 import EditIcon from "../../../assets/EditIcon";
 import TabLayout from "./Modal/TabLayout";
 import httpRequest from "../../../services/httpRequest";
-import constants from "../../../constants";
 const { Panel } = Collapse;
 
 const Layout = () => {

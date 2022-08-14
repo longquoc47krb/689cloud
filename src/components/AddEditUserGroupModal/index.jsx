@@ -1,22 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  Col,
-  DatePicker,
-  Form,
-  Modal,
-  Radio,
-  Row,
-  Typography,
-  Input,
-} from "antd";
-import { FieldArray, useFormik, FormikProvider, FastField } from "formik";
+import { Col, Form, Modal, Radio, Row, Typography } from "antd";
+import { FastField, FieldArray, FormikProvider, useFormik } from "formik";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TrashIcon from "../../assets/TrashIcon";
 import { validateUserGroupForm } from "../../middlewares/validate";
 import { AntdDatePicker, AntdInput, AntdInputPassword } from "../AntdInput";
 import AntdButton from "../Button";
-const { Item } = Form;
+
 const { Text } = Typography;
 const { Group } = Radio;
 function AddEditUserGroupModal(props) {
@@ -24,7 +15,7 @@ function AddEditUserGroupModal(props) {
   const initialValues = {
     name: selectedData.name ?? "",
     maxUser: selectedData.maxUser ?? "",
-    staffId: selectedData.staffId ?? moment(),
+    staffId: moment(selectedData?.staffId) ?? moment(),
     session: selectedData.session ?? "",
     id: selectedData.id ?? "",
     password: selectedData.password ?? "",

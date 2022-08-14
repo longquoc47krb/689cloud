@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Col, Modal, Row, Form, Card } from "antd";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Form, Modal } from "antd";
 import { FastField, FormikProvider, useFormik } from "formik";
-import { validateTabLayout } from "../../../../middlewares/validate";
-import { AntdInput } from "../../../../components/AntdInput";
+import React, { useEffect } from "react";
 import { IoMdSwap } from "react-icons/io";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuid } from "uuid";
-import constants from "../../../../constants";
+import { AntdInput } from "../../../../components/AntdInput";
+import { validateTabLayout } from "../../../../middlewares/validate";
 
 // end drag n drop feature
 const TabLayout = (props) => {
   const { title, open, selectedData, handleCancel } = props;
-  const [boards, setBoards] = useState({});
   console.log("selectedData", selectedData);
   // drag n drop feature
 
@@ -30,53 +27,8 @@ const TabLayout = (props) => {
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
-  const SearchBoxBoards = {
-    1: {
-      items: constants.searchBoxItems,
-    },
-    2: {
-      items: selectedData.searchFields ?? [],
-    },
-  };
-  useEffect(() => {
-    setBoards(SearchBoxBoards);
-  }, [selectedData]);
   // drag and drop feature
-  const onDragEnd = (result, boards, setBoards) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-    if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = boards[source.droppableId];
-      const destColumn = boards[destination.droppableId];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      setBoards({
-        ...boards,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems,
-        },
-      });
-    } else {
-      const board = boards[source.droppableId];
-      const copiedItems = [...board.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setBoards({
-        ...boards,
-        [source.droppableId]: {
-          ...board,
-          items: copiedItems,
-        },
-      });
-    }
-  };
+
   return (
     <Modal
       title={title}
@@ -99,7 +51,7 @@ const TabLayout = (props) => {
             <h1 className='title'>Selected search box</h1>
           </div>
           <div className='flex gap-x-2 justify-between items-center'>
-            <DragDropContext
+            {/* <DragDropContext
               onDragEnd={(result) => onDragEnd(result, boards, setBoards)}>
               {Object.entries(boards).map(([columnId, board], index) => {
                 return (
@@ -166,7 +118,7 @@ const TabLayout = (props) => {
                   </div>
                 );
               })}
-            </DragDropContext>
+            </DragDropContext> */}
             <IoMdSwap className='order-1 text-6xl' />
           </div>
         </Form>

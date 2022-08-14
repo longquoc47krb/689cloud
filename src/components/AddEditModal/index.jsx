@@ -1,28 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { Col, DatePicker, Input, Modal, Row, Form } from "antd";
+import { Col, Modal, Row, Form } from "antd";
 import { FastField, FormikProvider, useFormik } from "formik";
 import moment from "moment";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { validateUserForm } from "../../middlewares/validate";
+import { resetModal } from "../../redux/slices/modalSlice";
 import { AntdDatePicker, AntdInput } from "../AntdInput";
 const AddEditUserModal = (props) => {
-  const { title, open, selectedData, handleCancel } = props;
+  const { title, selectedData, open } = props;
+  const dispatch = useDispatch();
   const initialValues = {
-    id: selectedData.id ?? "",
-    name: selectedData.name ?? "",
-    suspension: selectedData.suspension ?? "",
-    contractStart: selectedData.contractStart ?? moment(),
-    contractEnd: selectedData.contractStart ?? moment(),
-    password: selectedData.password ?? "",
+    id: selectedData?.id ?? "",
+    name: selectedData?.name ?? "",
+    suspension: selectedData?.suspension ?? "",
+    contractStart: moment(selectedData.contractStart) ?? moment(),
+    contractEnd: moment(selectedData.contractEnd) ?? moment(),
+    password: selectedData?.password ?? "",
   };
-
+  console.log("selectedData", selectedData);
   // formik
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validateUserForm,
     onSubmit: (values) => {},
   });
+  const handleCancel = () => {
+    dispatch(resetModal());
+  };
   const { setValues } = formik;
   useEffect(() => {
     setValues(initialValues);
@@ -39,9 +44,9 @@ const AddEditUserModal = (props) => {
                 label='Contract Start'
                 name='contractStart'
               />
-              <FastField component={AntdInput} label='Param 01' />
-              <FastField component={AntdInput} label='Param 03' />
-              <FastField component={AntdInput} label='Param 05' />
+              <FastField component={AntdInput} label='Param 01' name='param1' />
+              <FastField component={AntdInput} label='Param 03' name='param3' />
+              <FastField component={AntdInput} label='Param 05' name='param5' />
             </Col>
             <Col span={12}>
               <FastField
@@ -54,9 +59,8 @@ const AddEditUserModal = (props) => {
                 label='Contract End'
                 name='contractEnd'
               />
-
-              <FastField component={AntdInput} label='Param 02' />
-              <FastField component={AntdInput} label='Param 04' />
+              <FastField component={AntdInput} label='Param 02' name='param2' />
+              <FastField component={AntdInput} label='Param 04' name='param4' />
             </Col>
           </Row>
           <Row gutter={[48, 40]} className='leading-8'>

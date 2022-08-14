@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Modal } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../assets/EditIcon";
 import TrashIcon from "../../assets/TrashIcon";
 import AddEditUserModal from "../../components/AddEditModal";
@@ -9,15 +9,17 @@ import AntdSearchAutocomplete from "../../components/AntSearchAutocomplete";
 import AntdButton from "../../components/Button";
 import AntdSelect from "../../components/Select";
 import { AntdTable } from "../../components/Table";
-import httpRequest from "../../services/httpRequest";
+import { openAddModal, openEditModal } from "../../redux/slices/modalSlice";
+import {
+  getUsers,
+  removeFilter,
+  setFilter,
+} from "../../redux/slices/userSlice";
 function UsersPage() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [isEditting, setIsEditting] = useState(false);
-  const [data, setData] = useState([]);
-  const [selected, setSelected] = useState({});
+  const modalToggle = useSelector((state) => state.modalToggle);
+  const users = useSelector((state) => state.users);
+  const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
-  const [filter, setFilter] = useState(null);
   const options = [
     { value: 5, text: "5" },
     { value: 10, text: "10" },
@@ -76,19 +78,13 @@ function UsersPage() {
   ];
   useEffect(() => {
     setRecordsPerPage(options[0].value);
-  }, []);
+  }, [modalToggle]);
   const handleSelect = (value) => {
     setRecordsPerPage(value);
   };
-  const onReset = () => {
-    setSelected({});
-  };
+  // Handlers
   const onEdit = (record) => {
-    setIsEditting(true);
-    setModalOpen(true);
-    setSelected(record);
-    console.loh("modal open:", modalOpen);
-    console.loh("selected user:", selected.name);
+    dispatch(openEditModal({ selectedData: record }));
   };
   const onDelete = (record) => {
     const title = [
@@ -104,34 +100,23 @@ function UsersPage() {
     });
   };
   useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      const res = await httpRequest({
-        url: "/users",
-        method: "GET",
-        params: {
-          name: filter,
-        },
-      });
-      setData(res);
-      setLoading(false);
-    };
-    fetchData();
-  }, [filter]);
+    dispatch(getUsers({ filter: users.filter }));
+  }, [users.filter]);
+  console.log("users", users);
   // handle searchBar
   const onChange = (value) => {
     if (value === "") {
-      setFilter(null);
+      dispatch(removeFilter());
     }
     setKeyword(value);
   };
 
   const suggestionSelected = (value) => {
     setKeyword(value);
-    setFilter(value);
+    dispatch(setFilter({ filter: value }));
   };
   const handlePressEnter = (value) => {
-    setFilter(keyword);
+    dispatch(setFilter({ filter: keyword }));
   };
   return (
     <div className='p-[33px]'>
@@ -139,12 +124,10 @@ function UsersPage() {
         <AntdButton
           className='antd-button'
           text='Add User'
-          onClick={() => {
-            setModalOpen(true);
-          }}
+          onClick={() => dispatch(openAddModal())}
         />
         <AntdSearchAutocomplete
-          dataSource={data.map((item) => {
+          dataSource={users.data.map((item) => {
             return {
               value: item.name,
               ...item,
@@ -156,26 +139,19 @@ function UsersPage() {
         />
       </div>
       <AntdTable
-        data={data}
-        isLoading={isLoading}
+        data={users.data}
+        isLoading={users.loading}
         columns={columns}
         recordsPerPage={recordsPerPage}
       />
       <AntdSelect values={options} onChange={handleSelect} />
       <AddEditUserModal
         destroyOnClose
-        title={isEditting ? "Edit User" : "Add User"}
-        open={modalOpen}
-        selectedData={selected ?? null}
-        handleCancel={() => {
-          setModalOpen(false);
-          setIsEditting(false);
-          onReset();
-        }}
-        handleOK={() => setModalOpen(false)}
+        open={modalToggle.toggle}
+        title={modalToggle.isEditting ? "Edit User" : "Add User"}
+        selectedData={modalToggle.selectedData}
       />
     </div>
   );
 }
-
 export default UsersPage;

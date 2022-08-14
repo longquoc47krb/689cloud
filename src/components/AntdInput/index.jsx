@@ -1,12 +1,10 @@
-import { DatePicker, Form, Input, Select, Typography } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import { ErrorMessage } from "formik";
-import moment from "moment";
 import React from "react";
-const { Text } = Typography;
 const { Item } = Form;
 const { Option } = Select;
 function AntdInput(props) {
-  const { field, placeholder, label, width } = props;
+  const { field, label, width } = props;
   const { value, onChange, onBlur, name } = field;
   return (
     <>
@@ -27,7 +25,7 @@ function AntdInput(props) {
   );
 }
 function AntdInputPassword(props) {
-  const { field, placeholder, label } = props;
+  const { field, label } = props;
   const { value, onChange, onBlur, name } = field;
   return (
     <>
@@ -48,7 +46,7 @@ function AntdInputPassword(props) {
 }
 function AntdDatePicker(props) {
   const dateFormat = "DD/MM/YYYY";
-  const { field, placeholder, label } = props;
+  const { field, label } = props;
   const { value, onChange, onBlur, name } = field;
   return (
     <>
@@ -71,7 +69,7 @@ function AntdDatePicker(props) {
 }
 function AntdSelect(props) {
   const { field, label, mode, options, width } = props;
-  const { value, onBlur, name } = field;
+  const { value, name } = field;
   const handleChange = (value) => {
     const changeEvent = {
       target: {

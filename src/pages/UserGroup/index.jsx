@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Modal } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import EditIcon from "../../assets/EditIcon";
 import TrashIcon from "../../assets/TrashIcon";
