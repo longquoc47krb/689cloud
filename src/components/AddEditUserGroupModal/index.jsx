@@ -3,15 +3,18 @@ import { Col, Form, Modal, Radio, Row, Typography } from "antd";
 import { FastField, FieldArray, FormikProvider, useFormik } from "formik";
 import moment from "moment";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import TrashIcon from "../../assets/TrashIcon";
 import { validateUserGroupForm } from "../../middlewares/validate";
+import { resetModal } from "../../redux/slices/modalSlice";
 import { AntdDatePicker, AntdInput, AntdInputPassword } from "../AntdInput";
 import AntdButton from "../Button";
 
 const { Text } = Typography;
 const { Group } = Radio;
 function AddEditUserGroupModal(props) {
-  const { title, open, selectedData, handleCancel } = props;
+  const { title, open, selectedData } = props;
+  const dispatch = useDispatch();
   const initialValues = {
     name: selectedData.name ?? "",
     maxUser: selectedData.maxUser ?? "",
@@ -38,7 +41,11 @@ function AddEditUserGroupModal(props) {
     setValues(initialValues);
   }, [selectedData]);
   return (
-    <Modal title={title} centered visible={open} onCancel={handleCancel}>
+    <Modal
+      title={title}
+      centered
+      visible={open}
+      onCancel={() => dispatch(resetModal())}>
       <FormikProvider value={formik}>
         <Form>
           <Row gutter={16}>

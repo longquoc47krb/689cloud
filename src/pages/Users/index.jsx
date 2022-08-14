@@ -9,6 +9,7 @@ import AntdSearchAutocomplete from "../../components/AntSearchAutocomplete";
 import AntdButton from "../../components/Button";
 import AntdSelect from "../../components/Select";
 import { AntdTable } from "../../components/Table";
+import constants from "../../constants";
 import { openAddModal, openEditModal } from "../../redux/slices/modalSlice";
 import {
   getUsers,
@@ -16,15 +17,13 @@ import {
   setFilter,
 } from "../../redux/slices/userSlice";
 function UsersPage() {
-  const modalToggle = useSelector((state) => state.modalToggle);
+  const modal = useSelector((state) => state.modal);
   const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
-  const options = [
-    { value: 5, text: "5" },
-    { value: 10, text: "10" },
-  ];
-  const [recordsPerPage, setRecordsPerPage] = useState(options[0].value);
+  const [recordsPerPage, setRecordsPerPage] = useState(
+    constants.options[0].value
+  );
   const columns = [
     {
       title: "Name",
@@ -77,11 +76,14 @@ function UsersPage() {
     },
   ];
   useEffect(() => {
-    setRecordsPerPage(options[0].value);
-  }, [modalToggle]);
+    setRecordsPerPage(constants.options[0].value);
+  }, [modal]);
   const handleSelect = (value) => {
     setRecordsPerPage(value);
   };
+  useEffect(() => {
+    dispatch(getUsers(users.filter));
+  }, [users.filter]);
   // Handlers
   const onEdit = (record) => {
     dispatch(openEditModal({ selectedData: record }));
@@ -99,9 +101,6 @@ function UsersPage() {
       onOk: () => {},
     });
   };
-  useEffect(() => {
-    dispatch(getUsers({ filter: users.filter }));
-  }, [users.filter]);
   console.log("users", users);
   // handle searchBar
   const onChange = (value) => {
@@ -110,7 +109,6 @@ function UsersPage() {
     }
     setKeyword(value);
   };
-
   const suggestionSelected = (value) => {
     setKeyword(value);
     dispatch(setFilter({ filter: value }));
@@ -144,12 +142,12 @@ function UsersPage() {
         columns={columns}
         recordsPerPage={recordsPerPage}
       />
-      <AntdSelect values={options} onChange={handleSelect} />
+      <AntdSelect values={constants.options} onChange={handleSelect} />
       <AddEditUserModal
         destroyOnClose
-        open={modalToggle.toggle}
-        title={modalToggle.isEditting ? "Edit User" : "Add User"}
-        selectedData={modalToggle.selectedData}
+        open={modal.toggle}
+        title={modal.isEditting ? "Edit User" : "Add User"}
+        selectedData={modal.selectedData}
       />
     </div>
   );

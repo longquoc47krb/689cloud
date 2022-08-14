@@ -7,18 +7,21 @@ const initialState = {
   loading: false,
 };
 //productList
-export const getUsers = createAsyncThunk("users/getUsers", async (filter) => {
-  const res = await httpRequest({
-    url: "/users",
-    method: "GET",
-    params: {
-      name: filter,
-    },
-  });
-  return res;
-});
-const userSlice = createSlice({
-  name: "users",
+export const getUserGroups = createAsyncThunk(
+  "usergroup/getUserGroups",
+  async (filter) => {
+    const res = await httpRequest({
+      url: "/usergroup",
+      method: "GET",
+      params: {
+        name: filter,
+      },
+    });
+    return res;
+  }
+);
+const userGroupSlice = createSlice({
+  name: "usergroup",
   initialState,
   reducers: {
     setFilter: (state, action) => {
@@ -30,14 +33,14 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getUsers.pending, (state) => {
+      .addCase(getUserGroups.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getUsers.fulfilled, (state, action) => {
+      .addCase(getUserGroups.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       });
   },
 });
-export const { setFilter, removeFilter } = userSlice.actions;
-export default userSlice.reducer;
+export const { setFilter, removeFilter } = userGroupSlice.actions;
+export default userGroupSlice.reducer;

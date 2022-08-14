@@ -6,7 +6,7 @@ const initialState = {
   selectedData: {},
 };
 const modalSlice = createSlice({
-  name: "modalToggle",
+  name: "modal",
   initialState,
   reducers: {
     openAddModal: (state) => {

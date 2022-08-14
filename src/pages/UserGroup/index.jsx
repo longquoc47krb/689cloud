@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../assets/EditIcon";
 import TrashIcon from "../../assets/TrashIcon";
 import AddEditUserGroupModal from "../../components/AddEditUserGroupModal";
@@ -8,23 +9,22 @@ import AntdSearchAutocomplete from "../../components/AntSearchAutocomplete";
 import AntdButton from "../../components/Button";
 import AntdSelect from "../../components/Select";
 import { AntdTable } from "../../components/Table";
+import constants from "../../constants";
+import { openAddModal, openEditModal } from "../../redux/slices/modalSlice";
+import {
+  getUserGroups,
+  removeFilter,
+  setFilter,
+} from "../../redux/slices/usergroupSlice";
 import httpRequest from "../../services/httpRequest";
 function UserGroup(props) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [isEditting, setIsEditting] = useState(false);
-  const [data, setData] = useState([]);
-  const [selected, setSelected] = useState({});
+  const modal = useSelector((state) => state.modal);
+  const usergroup = useSelector((state) => state.usergroup);
+  const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
-  const [filter, setFilter] = useState(null);
-  const options = [
-    { value: 5, text: "5" },
-    { value: 10, text: "10" },
-    { value: 20, text: "20" },
-    { value: 50, text: "50" },
-    { value: 100, text: "100" },
-  ];
-  const [recordsPerPage, setRecordsPerPage] = useState(options[0].value);
+  const [recordsPerPage, setRecordsPerPage] = useState(
+    constants.options[0].value
+  );
   const columns = [
     {
       title: "Name",
@@ -76,20 +76,14 @@ function UserGroup(props) {
     },
   ];
   useEffect(() => {
-    setRecordsPerPage(options[0].value);
+    setRecordsPerPage(constants.options[0].value);
   }, []);
   const handleSelect = (value) => {
     setRecordsPerPage(value);
   };
   // Handlers
-
-  const onReset = () => {
-    setSelected({});
-  };
   const onEdit = (record) => {
-    setIsEditting(true);
-    setModalOpen(true);
-    setSelected(record);
+    dispatch(openEditModal({ selectedData: record }));
   };
   const onDelete = (record) => {
     const title = [
@@ -105,34 +99,22 @@ function UserGroup(props) {
     });
   };
   useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      const res = await httpRequest({
-        url: "/userGroup",
-        method: "GET",
-        params: {
-          name: filter,
-        },
-      });
-      setData(res);
-      setLoading(false);
-    };
-    fetchData();
-  }, [filter]);
+    dispatch(getUserGroups(usergroup.filter));
+  }, [usergroup.filter]);
   // handle searchBar
   const onChange = (value) => {
     if (value === "") {
-      setFilter(null);
+      dispatch(removeFilter());
     }
     setKeyword(value);
   };
 
   const suggestionSelected = (value) => {
     setKeyword(value);
-    setFilter(value);
+    dispatch(setFilter({ filter: value }));
   };
   const handlePressEnter = (value) => {
-    setFilter(keyword);
+    dispatch(setFilter({ filter: keyword }));
   };
   return (
     <div className='p-[33px]'>
@@ -141,11 +123,11 @@ function UserGroup(props) {
           className='antd-button'
           text='Add User Group'
           onClick={() => {
-            setModalOpen(true);
+            dispatch(openAddModal());
           }}
         />
         <AntdSearchAutocomplete
-          dataSource={data.map((item) => {
+          dataSource={usergroup.data.map((item) => {
             return {
               value: item.name,
               ...item,
@@ -157,22 +139,17 @@ function UserGroup(props) {
         />
       </div>
       <AntdTable
-        data={data}
-        isLoading={isLoading}
+        data={usergroup.data}
+        isLoading={usergroup.loading}
         columns={columns}
         recordsPerPage={recordsPerPage}
       />
-      <AntdSelect values={options} onChange={handleSelect} />
+      <AntdSelect values={constants.options} onChange={handleSelect} />
       <AddEditUserGroupModal
-        title={isEditting ? "Edit User Group" : "Add User Group"}
-        open={modalOpen}
-        selectedData={selected ?? null}
-        handleCancel={() => {
-          setModalOpen(false);
-          setIsEditting(false);
-          onReset();
-        }}
-        handleOK={() => setModalOpen(false)}
+        destroyOnClose
+        open={modal.toggle}
+        title={modal.isEditting ? "Edit User" : "Add User"}
+        selectedData={modal.selectedData}
       />
     </div>
   );
