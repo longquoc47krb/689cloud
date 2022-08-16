@@ -46,8 +46,8 @@ function AntdInputPassword(props) {
 }
 function AntdDatePicker(props) {
   const dateFormat = "DD/MM/YYYY";
-  const { field, label } = props;
-  const { value, onChange, onBlur, name } = field;
+  const { form, field, label } = props;
+  const { value, onBlur, name } = field;
   return (
     <>
       <Item>
@@ -57,7 +57,7 @@ function AntdDatePicker(props) {
           format={dateFormat}
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={(value) => form.setFieldValue(name, value)}
           onBlur={onBlur}
         />
         <p className='error-message'>
