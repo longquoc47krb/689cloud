@@ -1,14 +1,30 @@
-import React, { useEffect } from "react";
+import { Button } from "antd";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  loginStatusSelector,
+  logout,
+  userSelector,
+} from "../redux/slices/authSlice";
+import { getGroupContent } from "../redux/slices/groupSlice";
 import { getProfile, userInfoSelector } from "../redux/slices/userSlice";
 
 function UserInfo() {
   const userInfo = useSelector(userInfoSelector);
+  const user = useSelector(userSelector);
+  const loginStatus = useSelector(loginStatusSelector);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getProfile());
-    console.log("userInfo", userInfo);
+    dispatch(getProfile(user.access_token));
   }, []);
+  const handleLogOut = () => {
+    dispatch(logout());
+    toast.success("Successfully logged out");
+    navigate("/");
+  };
   return (
     <div>
       <p className='title'>
@@ -43,8 +59,18 @@ function UserInfo() {
         Token API key:
         <span className='ml-5 text-green-500'>{userInfo?.token_api_key}</span>
       </p>
+      <Button
+        onClick={handleLogOut}
+        style={{
+          background: "#392999",
+          color: "white",
+          position: "absolute",
+          bottom: 24,
+        }}>
+        Log out
+      </Button>
     </div>
   );
 }
 
-export default UserInfo;
+export default memo(UserInfo);

@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { Card, Divider, Tabs } from "antd";
 import UserInfo from "./UserInfo";
 import GroupContent from "./GroupContent";
-import Welcome from "./Welcome";
 import { toast, ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
-import { loginStatusSelector } from "../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginStatusSelector, userSelector } from "../redux/slices/authSlice";
+import { getGroupContent } from "../redux/slices/groupSlice";
 const { TabPane } = Tabs;
 const UserPage = () => {
+  console.log("UsePag");
   const loginStatus = useSelector(loginStatusSelector);
+  const user = useSelector(userSelector);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (loginStatus?.status === 200) {
       toast.success("Successfully logged in");
@@ -24,13 +27,10 @@ const UserPage = () => {
           Profile
         </Divider>
         <Tabs defaultActiveKey='1'>
-          <TabPane tab='Auth' key='1'>
-            <Welcome />
-          </TabPane>
-          <TabPane tab='User Info' key='2'>
+          <TabPane tab='User Info' key='1'>
             <UserInfo />
           </TabPane>
-          <TabPane tab='Group' key='3'>
+          <TabPane tab='Group' key='2'>
             <GroupContent />
           </TabPane>
         </Tabs>
@@ -40,4 +40,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default memo(UserPage);

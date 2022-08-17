@@ -1,15 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table } from "../component/Table";
 import { getGroupContent, groupListSelector } from "../redux/slices/groupSlice";
-import { userFromStorage } from "../redux/slices/userSlice";
+// import { userFromStorage } from "../redux/slices/userSlice";
 import { TbEdit, TbTrash } from "react-icons/tb";
+import { Modal } from "antd";
+import { userSelector } from "../redux/slices/authSlice";
+import GroupDetails from "./GroupDetails";
+import { modalSelector, openModal } from "../redux/slices/modalSlice";
+import { userInfoSelector } from "../redux/slices/userSlice";
+import {
+  getSelectedGroupContent,
+  selectedGroupSelector,
+} from "../redux/slices/groupDetailSlice";
 function GroupContent() {
   const groupList = useSelector(groupListSelector);
+  const modal = useSelector(modalSelector);
+  const userInfo = useSelector(userInfoSelector);
+  const selectedGroup = useSelector(selectedGroupSelector);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getGroupContent(userFromStorage.domain));
-  }, [dispatch]);
+
+  useMemo(() => {
+    dispatch(getGroupContent({ domain: userInfo.domain }));
+  }, []);
   console.log("groupList", groupList);
 
   const columns = [
@@ -44,14 +57,14 @@ function GroupContent() {
               className='cursor-pointer'
               onClick={() => {
                 onEdit(record);
-                // setOpenTabLayOutModal(true);
+                // testEdit();
               }}>
               <TbEdit className='text-xl' />
             </div>
             <div
               className='cursor-pointer'
               onClick={() => {
-                // onDelete(record);
+                onDelete(record);
               }}>
               <TbTrash className='text-xl' />
             </div>
@@ -60,7 +73,29 @@ function GroupContent() {
       },
     },
   ];
-  const onEdit = (record) => {};
+  const onDelete = (record) => {
+    const title = [
+      `Are you sure, you want to delete `,
+      <span className='text-red-500'>{record.name}</span>,
+      ` ?`,
+    ];
+    Modal.confirm({
+      title: [...title],
+      okText: "OK",
+      okType: "danger",
+      onOk: () => {},
+    });
+  };
+  const onEdit = (record) => {
+    console.log("record", record);
+    console.log("userInfo domain", userInfo.domain);
+    dispatch(
+      getSelectedGroupContent({ id: record.id, domain: userInfo.domain })
+    );
+
+    dispatch(openModal());
+    console.log("selectedGroup", selectedGroup);
+  };
   return (
     <div>
       <p className='title'>GroupContent</p>
@@ -70,6 +105,7 @@ function GroupContent() {
         data={groupList}
         recordsPerPage={4}
       />
+      <GroupDetails open={modal.toggle} data={selectedGroup} />
     </div>
   );
 }

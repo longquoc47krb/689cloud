@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
-import React, { useEffect } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,13 +27,13 @@ const Login = (props) => {
   });
 
   // notification for login
-  useEffect(() => {
+  useMemo(() => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
       toast.success("You logged out!");
     }
-  }, [loginStatus]);
+  }, []);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);

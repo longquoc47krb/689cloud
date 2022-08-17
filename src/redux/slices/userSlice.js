@@ -4,13 +4,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const userFromStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
-export const getProfile = createAsyncThunk("user/profile", async () => {
+export const getProfile = createAsyncThunk("user/profile", async (token) => {
   try {
     const response = await httpRequest({
       url: "/auth/info",
       method: "GET",
       headers: {
-        "x-access-token": userFromStorage.access_token,
+        "x-access-token": token ?? userFromStorage.access_token,
       },
     });
     return { response };

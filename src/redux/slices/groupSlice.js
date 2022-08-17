@@ -3,8 +3,9 @@ import httpRequest from "../../services/httpRequest";
 import { userFromStorage } from "./userSlice";
 
 export const getGroupContent = createAsyncThunk(
-  "group/list/content",
-  async (domain) => {
+  "group/list",
+  async (params, thunkAPI) => {
+    const { domain } = params;
     try {
       const response = await httpRequest({
         url: "/content-group/content-group-list",
@@ -22,59 +23,16 @@ export const getGroupContent = createAsyncThunk(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message;
-      return { error };
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getGroupContentDetail = createAsyncThunk(
-  "group/content/detail",
-  async (content_group_id, domain) => {
-    try {
-      const response = await httpRequest({
-        url: "/content-group/content-group-list",
-        method: "GET",
-        params: {
-          content_group_id: content_group_id,
-          domain: domain,
-          page: 1,
-          size: 4,
-        },
-      });
-      return { response };
-    } catch (err) {
-      const error =
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message;
-      return { error };
-    }
-  }
-);
-export const currentGroupSlice = createSlice({
-  name: "current_group",
-  initialState: {
-    currentGroup: null,
-    loading: false,
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getGroupContentDetail.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getGroupContent.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(getGroupContentDetail.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentGroup = action.payload.response.data;
-      });
-  },
-});
 const groupSlice = createSlice({
   name: "group",
   initialState: {
     groupList: null,
     loading: false,
+    selectedGroup: null,
   },
   extraReducers: (builder) => {
     builder
@@ -90,6 +48,6 @@ const groupSlice = createSlice({
       });
   },
 });
-export const currentGroupSelector = (state) => state.current_group.currentGroup;
+export const selectedGroupSelector = (state) => state.group.selectedGroup;
 export const groupListSelector = (state) => state.group.groupList;
 export default groupSlice.reducer;
