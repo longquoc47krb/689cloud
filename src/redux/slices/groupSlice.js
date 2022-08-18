@@ -65,6 +65,7 @@ const groupSlice = createSlice({
   },
   reducers: {
     closeModal: (state) => {
+      state.selectedGroup = null;
       state.toggle = false;
     },
   },
