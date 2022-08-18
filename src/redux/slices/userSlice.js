@@ -28,18 +28,17 @@ const userSlice = createSlice({
     userInfo: null,
     loading: false,
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getProfile.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.userInfo = action.payload.response.data;
-      })
-      .addCase(getProfile.rejected, (state) => {
-        state.loading = false;
-      });
+  extraReducers: {
+    [getProfile.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProfile.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userInfo = action.payload.response.data;
+    },
+    [getProfile.rejected]: (state) => {
+      state.loading = false;
+    },
   },
 });
 

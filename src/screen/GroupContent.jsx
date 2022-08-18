@@ -1,26 +1,31 @@
-import React, { useMemo } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table } from "../component/Table";
 import {
   getGroupContent,
   getSelectedGroupContent,
   groupListSelector,
+  groupSelector,
   selectedGroupSelector,
 } from "../redux/slices/groupSlice";
 import { TbEdit, TbTrash } from "react-icons/tb";
 import { Modal } from "antd";
 import GroupDetails from "./GroupDetails";
-import { modalSelector, openModal } from "../redux/slices/modalSlice";
-import { userInfoSelector } from "../redux/slices/userSlice";
+import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
+import { userSelector } from "../redux/slices/authSlice";
+import Loading from "../component/Loading";
 function GroupContent() {
   const groupList = useSelector(groupListSelector);
-  const modal = useSelector(modalSelector);
   const userInfo = useSelector(userInfoSelector);
+  const groupAllState = useSelector(groupSelector);
+  const user = useSelector(userSelector);
+  console.log("userInfo", userInfo);
   const selectedGroup = useSelector(selectedGroupSelector);
   const dispatch = useDispatch();
-
-  useMemo(() => {
-    dispatch(getGroupContent({ domain: userInfo.domain }));
+  useEffect(() => {
+    dispatch(
+      getGroupContent({ token: user.access_token, domain: user.domain })
+    );
   }, []);
   console.log("groupList", groupList);
 
@@ -89,22 +94,31 @@ function GroupContent() {
     console.log("record", record);
     console.log("userInfo domain", userInfo.domain);
     dispatch(
-      getSelectedGroupContent({ id: record.id, domain: userInfo.domain })
+      getSelectedGroupContent({
+        token: user.access_token,
+        id: record.id,
+        domain: userInfo.domain,
+      })
     );
 
-    dispatch(openModal());
     console.log("selectedGroup", selectedGroup);
   };
+  console.log("localstorage groupcontent", userFromStorage);
+
   return (
     <div>
       <p className='title'>GroupContent</p>
       <Table
         columns={columns}
-        loading={groupList?.loading}
         data={groupList}
+        loading={groupList ? false : true}
         recordsPerPage={4}
       />
-      <GroupDetails open={modal.toggle} data={selectedGroup} />
+      <GroupDetails
+        open={groupAllState.toggle}
+        data={selectedGroup}
+        loading={selectedGroup ? false : true}
+      />
     </div>
   );
 }

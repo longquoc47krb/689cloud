@@ -5,7 +5,7 @@ import { userFromStorage } from "./userSlice";
 export const getGroupContent = createAsyncThunk(
   "group/list",
   async (params, thunkAPI) => {
-    const { domain } = params;
+    const { token, domain } = params;
     try {
       const response = await httpRequest({
         url: "/content-group/content-group-list",
@@ -14,7 +14,7 @@ export const getGroupContent = createAsyncThunk(
           domain: domain,
         },
         headers: {
-          "x-access-token": userFromStorage.access_token,
+          "x-access-token": token ?? userFromStorage.access_token,
         },
       });
       return { response };
@@ -30,12 +30,10 @@ export const getGroupContent = createAsyncThunk(
 export const getSelectedGroupContent = createAsyncThunk(
   "group/detail",
   async (params, thunkAPI) => {
-    const { id, domain } = params;
+    const { token, id, domain } = params;
     try {
-      console.log("id", id);
-      console.log("domainn", domain);
       const response = await httpRequest({
-        url: "/content-group/content-group-list",
+        url: "/content/public/page",
         method: "GET",
         params: {
           content_group_id: id,
@@ -44,7 +42,7 @@ export const getSelectedGroupContent = createAsyncThunk(
           size: 4,
         },
         headers: {
-          "x-access-token": userFromStorage.access_token,
+          "x-access-token": token ?? userFromStorage.access_token,
         },
       });
       return { response };
@@ -63,32 +61,42 @@ const groupSlice = createSlice({
     groupList: null,
     loading: false,
     selectedGroup: null,
+    toggle: false,
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getGroupContent.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getGroupContent.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(getGroupContent.fulfilled, (state, action) => {
-        state.loading = false;
-        state.groupList = action.payload.response.data;
-      });
-    builder
-      .addCase(getSelectedGroupContent.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getSelectedGroupContent.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(getSelectedGroupContent.fulfilled, (state, action) => {
-        state.loading = false;
-        state.selectedGroup = action.payload.response.data;
-      });
+  reducers: {
+    closeModal: (state) => {
+      state.toggle = false;
+    },
+  },
+  extraReducers: {
+    [getGroupContent.pending]: (state) => {
+      state.loading = true;
+    },
+    [getGroupContent.rejected]: (state) => {
+      state.loading = false;
+    },
+    [getGroupContent.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.groupList = action.payload.response.data;
+    },
+    [getSelectedGroupContent.pending]: (state) => {
+      state.loading = true;
+      state.toggle = true;
+    },
+    [getSelectedGroupContent.rejected]: (state) => {
+      state.loading = false;
+      state.toggle = false;
+    },
+    [getSelectedGroupContent.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.toggle = true;
+      state.selectedGroup = action.payload.response.data.content;
+    },
   },
 });
+
 export const selectedGroupSelector = (state) => state.group.selectedGroup;
 export const groupListSelector = (state) => state.group.groupList;
+export const groupSelector = (state) => state.group;
+export const { closeModal } = groupSlice.actions;
 export default groupSlice.reducer;

@@ -1,16 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
-import React, { memo, useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateLoginForm } from "../middlewares/validate";
 import { AntdInput } from "../component/AntdInput";
-import { login, loginStatusSelector } from "../redux/slices/authSlice";
+import {
+  authSelector,
+  login,
+  loginStatusSelector,
+} from "../redux/slices/authSlice";
+import LoadingButton from "../component/LoadingButton";
 const Login = (props) => {
   const { selectedData } = props;
   const loginStatus = useSelector(loginStatusSelector);
+  const authStates = useSelector(authSelector);
   const dispatch = useDispatch();
   const initialValues = {
     client_ip_address: "",
@@ -27,13 +33,13 @@ const Login = (props) => {
   });
 
   // notification for login
-  useMemo(() => {
+  useEffect(() => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
       toast.success("You logged out!");
     }
-  }, []);
+  }, [loginStatus]);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);
@@ -64,11 +70,12 @@ const Login = (props) => {
                   />
                 </Col>
               </Row>
-              <button
+              {/* <button
                 className='w-full bg-[#325aa8] p-3 text-white'
                 type='submit'>
                 LOGIN
-              </button>
+              </button> */}
+              <LoadingButton loading={authStates.loading} />
             </Form>
           </FormikProvider>
           <ToastContainer />

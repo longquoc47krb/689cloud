@@ -34,25 +34,25 @@ const authSlice = createSlice({
       state.loginStatus = null;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.loginStatus = action.payload.response;
-        if (action.payload.response.status === 200) {
-          state.user = action.payload.response.data;
-        }
-      })
-      .addCase(login.rejected, (state) => {
-        state.loading = false;
-      });
+  extraReducers: {
+    [login.pending]: (state) => {
+      state.loading = true;
+    },
+    [login.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.loginStatus = action.payload.response;
+      if (action.payload.response.status === 200) {
+        state.user = action.payload.response.data;
+      }
+    },
+    [login.rejected]: (state) => {
+      state.loading = false;
+    },
   },
 });
 
 export const { logout } = authSlice.actions;
 export const userSelector = (state) => state.auth.user;
+export const authSelector = (state) => state.auth;
 export const loginStatusSelector = (state) => state.auth.loginStatus;
 export default authSlice.reducer;
