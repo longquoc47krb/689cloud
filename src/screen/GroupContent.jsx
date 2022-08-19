@@ -13,7 +13,6 @@ import { Modal } from "antd";
 import GroupDetails from "./GroupDetails";
 import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
 import { userSelector } from "../redux/slices/authSlice";
-import Loading from "../component/Loading";
 function GroupContent() {
   const [selectedGroupName, setSelectedGroupName] = useState("");
   const groupList = useSelector(groupListSelector);
@@ -25,7 +24,7 @@ function GroupContent() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getGroupContent({ domain: user.domain }));
-  }, []);
+  }, [dispatch, user.domain]);
   console.log("groupList", groupList);
 
   const columns = [

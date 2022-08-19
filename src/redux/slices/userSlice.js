@@ -9,9 +9,6 @@ export const getProfile = createAsyncThunk("user/profile", async (token) => {
     const response = await httpRequest({
       url: "/auth/info",
       method: "GET",
-      headers: {
-        "x-access-token": token ?? userFromStorage.access_token,
-      },
     });
     return { response };
   } catch (err) {
@@ -22,11 +19,34 @@ export const getProfile = createAsyncThunk("user/profile", async (token) => {
     return { error };
   }
 });
+export const getProfileFakeUser = createAsyncThunk(
+  "user/profile/user",
+  async (token) => {
+    try {
+      const response = await httpRequest({
+        url: "/auth/info",
+        method: "GET",
+      });
+      return { response };
+    } catch (err) {
+      const error =
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message;
+      return { error };
+    }
+  }
+);
 const userSlice = createSlice({
   name: "user",
   initialState: {
     userInfo: null,
     loading: false,
+  },
+  reducers: {
+    clearUserInfo: (state) => {
+      state.userInfo = null;
+    },
   },
   extraReducers: {
     [getProfile.pending]: (state) => {
@@ -39,8 +59,19 @@ const userSlice = createSlice({
     [getProfile.rejected]: (state) => {
       state.loading = false;
     },
+    [getProfileFakeUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProfileFakeUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userInfo = action.payload.response.data;
+      state.userInfo = { ...state.userInfo, role_level: 1 };
+    },
+    [getProfileFakeUser.rejected]: (state) => {
+      state.loading = false;
+    },
   },
 });
-
+export const { clearUserInfo } = userSlice.actions;
 export const userInfoSelector = (state) => state.user.userInfo;
 export default userSlice.reducer;

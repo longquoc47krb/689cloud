@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
@@ -11,10 +12,13 @@ import {
   authSelector,
   login,
   loginStatusSelector,
+  loginUser,
 } from "../redux/slices/authSlice";
 import LoadingButton from "../component/LoadingButton";
+import { Link, useNavigate } from "react-router-dom";
 const Login = (props) => {
-  const { selectedData } = props;
+  const { selectedData, title } = props;
+  const navigate = useNavigate();
   const loginStatus = useSelector(loginStatusSelector);
   const authStates = useSelector(authSelector);
   const dispatch = useDispatch();
@@ -28,7 +32,12 @@ const Login = (props) => {
     initialValues: initialValues,
     validationSchema: validateLoginForm,
     onSubmit: async (values) => {
-      dispatch(login(values));
+      if (title === "User Login") {
+        dispatch(loginUser(values));
+      } else {
+        dispatch(login(values));
+      }
+      navigate("/dashboard");
     },
   });
 
@@ -37,9 +46,9 @@ const Login = (props) => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
-      toast.success("You logged out!");
+      toast.error("You haven't logged in yet");
     }
-  }, [loginStatus]);
+  }, []);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);
@@ -50,7 +59,7 @@ const Login = (props) => {
       <div className='bg-gray-200 flex items-center justify-center w-full h-[100vh]'>
         <Card style={{ width: 500 }}>
           <FormikProvider value={formikLogin}>
-            <h1 className='title text-3xl flex justify-center'>Login</h1>
+            <h1 className='title text-3xl flex justify-center'>{title}</h1>
             <Form onSubmit={handleSubmit}>
               <Row gutter={16} className='leading-8'>
                 <Col span={24}>
@@ -71,6 +80,18 @@ const Login = (props) => {
                 </Col>
               </Row>
               <LoadingButton loading={authStates.loading} />
+              <span className='mt-4 text-base flex justify-center text-[#73879C] '>
+                Switch to
+                {title === "Admin Login" ? (
+                  <Link to='/login'>
+                    <a className='mx-1'>User Login</a>
+                  </Link>
+                ) : (
+                  <Link to='/admin-login'>
+                    <a className='mx-1'>Admin Login</a>
+                  </Link>
+                )}
+              </span>
             </Form>
           </FormikProvider>
           <ToastContainer />

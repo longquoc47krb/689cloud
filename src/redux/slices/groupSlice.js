@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import httpRequest from "../../services/httpRequest";
-import { userFromStorage } from "./userSlice";
 
 export const getGroupContent = createAsyncThunk(
   "group/list",
