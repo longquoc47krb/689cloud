@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table } from "../component/Table";
 import {
   getGroupContent,
   getSelectedGroupContent,
@@ -13,6 +12,7 @@ import { Modal } from "antd";
 import GroupDetails from "./GroupDetails";
 import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
 import { userSelector } from "../redux/slices/authSlice";
+import Table from "../component/Table";
 function GroupContent() {
   const [selectedGroupName, setSelectedGroupName] = useState("");
   const groupList = useSelector(groupListSelector);

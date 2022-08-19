@@ -5,6 +5,11 @@ import { authSelector, userSelector } from "./redux/slices/authSlice";
 import Login from "./screen/Login";
 import Dashboard from "./screen/Dashboard";
 import NotFound from "./screen/NotFound";
+import AdminLayout from "./screen/Admin/layout";
+import Blank from "./screen/Admin/Blank";
+import UserGroup from "./screen/Admin/UserGroup";
+import UsersPage from "./screen/Admin/Users";
+import Messages from "./screen/Admin/Messages";
 function App() {
   const token = useSelector((state) => state.auth.user?.access_token);
   const user = useSelector(userSelector);
@@ -12,8 +17,20 @@ function App() {
   function AdminRoutes() {
     return (
       <Routes>
-        <Route path='/dashboard' element={<Dashboard role='Admin' />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/' element={<AdminLayout />}>
+          <Route
+            path='/files'
+            element={<Blank name='This is File Management page' />}
+          />
+          <Route path='/group' element={<UserGroup />} />
+          <Route path='/users' element={<UsersPage />} />
+          <Route path='/messages' element={<Messages />} />
+          <Route
+            path='/dashboard'
+            element={<Blank name='This is Dashboard' />}
+          />
+          <Route path='*' element={<Navigate to='/users' replace />} />
+        </Route>
       </Routes>
     );
   }

@@ -1,6 +1,6 @@
 import { Skeleton, Table as AntdTable } from "antd";
 import React from "react";
-export const Table = (props) => {
+const Table = (props) => {
   const { id, columns, loading, data, recordsPerPage, className } = props;
   return (
     <div className={className}>
@@ -15,3 +15,4 @@ export const Table = (props) => {
     </div>
   );
 };
+export default Table;

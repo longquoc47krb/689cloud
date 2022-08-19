@@ -1,12 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import adminModalSlice from "./slices/adminModalSlice";
 import authSlice from "./slices/authSlice";
 import groupSlice from "./slices/groupSlice";
+import usergroupSlice from "./slices/usergroupSlice";
 import userSlice from "./slices/userSlice";
 
 const rootReducer = combineReducers({
   auth: authSlice,
   user: userSlice,
   group: groupSlice,
+  modal: adminModalSlice,
+  usergroup: usergroupSlice,
 });
 export const store = configureStore({
   reducer: rootReducer,

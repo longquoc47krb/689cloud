@@ -13,6 +13,7 @@ import {
   login,
   loginStatusSelector,
   loginUser,
+  getIPAddress,
 } from "../redux/slices/authSlice";
 import LoadingButton from "../component/LoadingButton";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ const Login = (props) => {
   const authStates = useSelector(authSelector);
   const dispatch = useDispatch();
   const initialValues = {
-    client_ip_address: "",
+    client_ip_address: authStates.ip,
     company_domain: "",
   };
 
@@ -40,7 +41,6 @@ const Login = (props) => {
       navigate("/dashboard");
     },
   });
-
   // notification for login
   useEffect(() => {
     if (loginStatus) {
@@ -48,6 +48,9 @@ const Login = (props) => {
     } else {
       toast.error("You haven't logged in yet");
     }
+  }, []);
+  useEffect(() => {
+    dispatch(getIPAddress());
   }, []);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {

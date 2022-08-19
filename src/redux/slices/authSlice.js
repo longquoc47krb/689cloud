@@ -1,5 +1,6 @@
 import httpRequest from "../../services/httpRequest";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 //login logout
 export const login = createAsyncThunk("auth/login", async (user) => {
@@ -42,12 +43,25 @@ export const loginUser = createAsyncThunk("auth/login/user", async (user) => {
     return { error };
   }
 });
+export const getIPAddress = createAsyncThunk("auth/client-ip", async () => {
+  try {
+    const response = await axios.get("https://api.ipify.org");
+    return response.data;
+  } catch (err) {
+    return err;
+  }
+});
 const userFromStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
 const authSlice = createSlice({
   name: "auth",
-  initialState: { user: userFromStorage, loading: false, loginStatus: null },
+  initialState: {
+    user: userFromStorage,
+    loading: false,
+    loginStatus: null,
+    ip: null,
+  },
   reducers: {
     logout: (state) => {
       state.user = null;
@@ -84,6 +98,16 @@ const authSlice = createSlice({
     },
     [loginUser.rejected]: (state) => {
       state.loading = false;
+    },
+    [getIPAddress.pending]: (state) => {
+      state.loading = true;
+    },
+    [getIPAddress.rejected]: (state) => {
+      state.loading = false;
+    },
+    [getIPAddress.fulfilled]: (state, action) => {
+      state.ip = action.payload;
+      state.loading = true;
     },
   },
 });
