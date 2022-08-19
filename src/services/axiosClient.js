@@ -3,12 +3,16 @@ const axiosClient = axios.create({
   baseURL: "https://dev-api.689cloud.com/urss-be-dev/api/v1/",
   headers: {
     "Content-Type": "application/json",
+    "x-access-token": localStorage.getItem("x-access-token"),
   },
 });
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    config.headers = {
+      "x-access-token": localStorage.getItem("x-access-token"),
+      "Content-type": "application/json",
+    };
     return config;
   },
   function (error) {
@@ -24,9 +28,13 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    if (!error.response) throw new Error("Network error ");
-    if (error.response.status === 401) {
-      // clear token logout
+    const { data, status } = error.response;
+    if (
+      (status === 401 || status === 403) &&
+      data.message === "Unauthorized or Access Token is expired"
+    ) {
+      axiosClient.defaults.headers.common["x-access-token"] =
+        localStorage.getItem("x-access-token");
     }
     return Promise.reject(error);
   }

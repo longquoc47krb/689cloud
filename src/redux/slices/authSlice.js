@@ -10,6 +10,7 @@ export const login = createAsyncThunk("auth/login", async (user) => {
       data: user,
     });
     if (response.status === 200) {
+      localStorage.setItem("x-access-token", response.data.access_token);
       localStorage.setItem("user", JSON.stringify(response.data));
     }
     return { response };

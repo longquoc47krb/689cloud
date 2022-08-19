@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table } from "../component/Table";
 import {
@@ -15,6 +15,7 @@ import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
 import { userSelector } from "../redux/slices/authSlice";
 import Loading from "../component/Loading";
 function GroupContent() {
+  const [selectedGroupName, setSelectedGroupName] = useState("");
   const groupList = useSelector(groupListSelector);
   const userInfo = useSelector(userInfoSelector);
   const groupAllState = useSelector(groupSelector);
@@ -23,9 +24,7 @@ function GroupContent() {
   const selectedGroup = useSelector(selectedGroupSelector);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      getGroupContent({ token: user.access_token, domain: user.domain })
-    );
+    dispatch(getGroupContent({ domain: user.domain }));
   }, []);
   console.log("groupList", groupList);
 
@@ -93,9 +92,9 @@ function GroupContent() {
   const onEdit = (record) => {
     console.log("record", record);
     console.log("userInfo domain", userInfo.domain);
+    setSelectedGroupName(record.name);
     dispatch(
       getSelectedGroupContent({
-        token: user.access_token,
         id: record.id,
         domain: userInfo.domain,
       })
@@ -112,9 +111,10 @@ function GroupContent() {
         columns={columns}
         data={groupList}
         loading={groupList ? false : true}
-        recordsPerPage={4}
+        recordsPerPage={7}
       />
       <GroupDetails
+        title={selectedGroupName}
         open={groupAllState.toggle}
         data={selectedGroup}
         loading={selectedGroup ? false : true}

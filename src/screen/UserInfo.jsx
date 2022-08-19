@@ -19,9 +19,7 @@ function UserInfo(props) {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getProfile(user.access_token));
-    console.log("localstorage userinfo", userFromStorage);
   }, []);
-
   const handleLogOut = () => {
     dispatch(logout());
     toast.success("Successfully logged out");

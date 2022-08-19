@@ -5,16 +5,13 @@ import { userFromStorage } from "./userSlice";
 export const getGroupContent = createAsyncThunk(
   "group/list",
   async (params, thunkAPI) => {
-    const { token, domain } = params;
+    const { domain } = params;
     try {
       const response = await httpRequest({
         url: "/content-group/content-group-list",
         method: "GET",
         params: {
           domain: domain,
-        },
-        headers: {
-          "x-access-token": token ?? userFromStorage.access_token,
         },
       });
       return { response };
@@ -30,7 +27,7 @@ export const getGroupContent = createAsyncThunk(
 export const getSelectedGroupContent = createAsyncThunk(
   "group/detail",
   async (params, thunkAPI) => {
-    const { token, id, domain } = params;
+    const { id, domain } = params;
     try {
       const response = await httpRequest({
         url: "/content/public/page",
@@ -40,9 +37,6 @@ export const getSelectedGroupContent = createAsyncThunk(
           domain: domain,
           page: 1,
           size: 4,
-        },
-        headers: {
-          "x-access-token": token ?? userFromStorage.access_token,
         },
       });
       return { response };

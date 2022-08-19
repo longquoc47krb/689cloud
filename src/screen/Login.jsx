@@ -70,11 +70,6 @@ const Login = (props) => {
                   />
                 </Col>
               </Row>
-              {/* <button
-                className='w-full bg-[#325aa8] p-3 text-white'
-                type='submit'>
-                LOGIN
-              </button> */}
               <LoadingButton loading={authStates.loading} />
             </Form>
           </FormikProvider>
