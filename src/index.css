@@ -53,6 +53,9 @@ code {
 .ant-modal-close-x {
   visibility: hidden;
 }
+.ant-select-selector {
+  padding: 5px !important;
+}
 .error-message {
   color: red;
   line-height: 1rem !important;

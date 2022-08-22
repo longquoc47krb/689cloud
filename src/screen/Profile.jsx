@@ -11,11 +11,13 @@ import {
   userInfoSelector,
 } from "../redux/slices/userSlice";
 import { logout } from "../redux/slices/authSlice";
+import { useTranslation } from "react-i18next";
 
 function Profile(props) {
   const { loading, role } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   useEffect(() => {
     if (role === "Admin") {
       dispatch(getProfile());
@@ -27,7 +29,7 @@ function Profile(props) {
   const handleLogOut = () => {
     dispatch(logout());
     dispatch(clearUserInfo());
-    toast.success("Successfully logged out");
+    toast.success(t("logout-msg"));
     navigate("/login");
   };
   return (
@@ -38,31 +40,31 @@ function Profile(props) {
           <span className='ml-5 text-green-500'>{userInfo?.id}</span>
         </p>
         <p className='title'>
-          Company Id:
+          {t("company-id")}
           <span className='ml-5 text-green-500'>{userInfo?.company_id}</span>
         </p>
         <p className='title'>
-          Name:
+          {t("name")}
           <span className='ml-5 text-green-500'>{userInfo?.name}</span>
         </p>
         <p className='title'>
-          Domain:
+          {t("domain")}
           <span className='ml-5 text-green-500'>{userInfo?.domain}</span>
         </p>
         <p className='title'>
-          Role level:
+          {t("role-level")}
           <span className='ml-5 text-green-500'>{userInfo?.role_level}</span>
         </p>
         <p className='title'>
-          Be User ID:
+          {t("be-user-id")}
           <span className='ml-5 text-green-500'>{userInfo?.be_user_id}</span>
         </p>
         <p className='title'>
-          Card Number:
+          {t("card-number")}
           <span className='ml-5 text-green-500'>{userInfo?.card_number}</span>
         </p>
         <p className='title'>
-          Token API key:
+          {t("token-api-key")}
           <span className='ml-5 text-green-500'>{userInfo?.token_api_key}</span>
         </p>
         <Button
@@ -73,7 +75,7 @@ function Profile(props) {
             position: "absolute",
             bottom: 24,
           }}>
-          Log out
+          {t("log-out")}
         </Button>
       </div>
     </Skeleton>

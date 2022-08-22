@@ -10,10 +10,12 @@ import Blank from "./screen/Admin/Blank";
 import UserGroup from "./screen/Admin/UserGroup";
 import UsersPage from "./screen/Admin/Users";
 import Messages from "./screen/Admin/Messages";
+import { useTranslation } from "react-i18next";
 function App() {
   const token = useSelector((state) => state.auth.user?.access_token);
   const user = useSelector(userSelector);
   const auth = useSelector(authSelector);
+  const { t } = useTranslation();
   function AdminRoutes() {
     return (
       <Routes>
@@ -37,7 +39,7 @@ function App() {
   function UserRoutes() {
     return (
       <Routes>
-        <Route path='/dashboard' element={<Dashboard role='User' />} />
+        <Route path='/dashboard' element={<Dashboard role={t("user")} />} />
       </Routes>
     );
   }
@@ -45,8 +47,11 @@ function App() {
     return (
       <Routes>
         <Route path='*' element={<Navigate to='/login' replace />} />
-        <Route path='/login' element={<Login title='User Login' />} />
-        <Route path='/admin-login' element={<Login title='Admin Login' />} />
+        <Route path='/login' element={<Login title={t("user-login")} />} />
+        <Route
+          path='/admin-login'
+          element={<Login title={t("admin-login")} />}
+        />
       </Routes>
     );
   }

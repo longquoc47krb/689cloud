@@ -5,21 +5,22 @@ import SearchBoxModal from "./Modal";
 import { Modal } from "antd";
 import httpRequest from "../../../../services/httpRequest";
 import Table from "../../../../component/Table";
+import { useTranslation } from "react-i18next";
 
 const SearchBox = () => {
   const [openModal, setModalOpen] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [selected, setSelected] = useState(null);
   const [searchBoxData, setSearchBoxData] = useState(null);
-
+  const { t } = useTranslation();
   const columns = [
     {
-      title: <h1 className='title'>Label</h1>,
+      title: <h1 className='title'>{t("label")}</h1>,
       dataIndex: "label",
       render: (label) => <h3>{label}</h3>,
     },
     {
-      title: <h1 className='title'>Search Fields</h1>,
+      title: <h1 className='title'>{t("search-fields")}</h1>,
       dataIndex: "searchFields",
       render: (searchFields) =>
         searchFields.map((searchFields) => (
@@ -29,17 +30,17 @@ const SearchBox = () => {
         )),
     },
     {
-      title: <h1 className='title'>Operation</h1>,
+      title: <h1 className='title'>{t("operation")}</h1>,
       dataIndex: "operation",
       render: (operation) => <h3>{operation}</h3>,
     },
     {
-      title: <h1 className='title'>Match Value</h1>,
+      title: <h1 className='title'>{t("match-value")}</h1>,
       dataIndex: "matchValue",
       render: (matchValue) => <h3>{matchValue}</h3>,
     },
     {
-      title: <h1 className='title'>Action</h1>,
+      title: <h1 className='title'>{t("action")}</h1>,
       render: (record) => {
         return (
           <div className='flex'>
@@ -103,7 +104,7 @@ const SearchBox = () => {
       <button
         onClick={() => setModalOpen(true)}
         className='button bg-[#839C97] text-white px-5'>
-        ADD SEARCH BOX
+        {t("add-search-box")}
       </button>
       <Table columns={columns} className='mt-5' data={searchBoxData} />
       <SearchBoxModal

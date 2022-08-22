@@ -19,43 +19,45 @@ import {
   removeFilter,
   setFilter,
 } from "../../../redux/slices/usersSlice";
+import { useTranslation } from "react-i18next";
 function UsersPage() {
   const modal = useSelector((state) => state.modal);
   const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState("");
   const [recordsPerPage, setRecordsPerPage] = useState(
     constants.options[0].value
   );
   const columns = [
     {
-      title: "Name",
+      title: t("name"),
       dataIndex: "name",
       render: (name) => <h3>{name}</h3>,
     },
     {
-      title: "Contract Start",
+      title: t("contract-start"),
       dataIndex: "contractStart",
       render: (contractStart) => <h3>{contractStart}</h3>,
     },
     {
-      title: "Contract End",
+      title: t("contract-end"),
       dataIndex: "contractEnd",
       render: (contractEnd) => <h3>{contractEnd}</h3>,
     },
     {
-      title: "Created date",
+      title: t("created-date"),
       dataIndex: "date",
       render: (date) => <>{date}</>,
       width: "30%",
     },
     {
-      title: "Suspension",
+      title: t("suspension"),
       dataIndex: "suspension",
       render: (suspension) => <h3>{suspension}</h3>,
     },
     {
-      title: "Action",
+      title: t("action"),
       render: (record) => {
         return (
           <div className='flex'>
@@ -124,7 +126,7 @@ function UsersPage() {
       <div className='flex justify-between mb-4'>
         <AntdButton
           className='antd-button'
-          text='Add User'
+          text={t("add-user")}
           onClick={() => dispatch(openAddModal())}
         />
         <AntdSearchAutocomplete

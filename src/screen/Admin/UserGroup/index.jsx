@@ -19,42 +19,44 @@ import {
 } from "../../../redux/slices/usergroupSlice";
 import EditIcon from "../../../assets/EditIcon";
 import TrashIcon from "../../../assets/TrashIcon";
+import { useTranslation } from "react-i18next";
 function UserGroup(props) {
   const modal = useSelector((state) => state.modal);
   const usergroup = useSelector((state) => state.usergroup);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState("");
   const [recordsPerPage, setRecordsPerPage] = useState(
     constants.options[0].value
   );
   const columns = [
     {
-      title: "Name",
+      title: t("name"),
       dataIndex: "name",
       render: (name) => <h3>{name}</h3>,
     },
     {
-      title: "Max User",
+      title: t("max-user"),
       dataIndex: "maxUser",
       render: (maxUser) => <h3>{maxUser}</h3>,
     },
     {
-      title: "Session",
+      title: t("session"),
       dataIndex: "session",
       render: (session) => <h3>{session}</h3>,
     },
     {
-      title: "Staff Id",
+      title: t("staff-id"),
       dataIndex: "staffId",
       render: (staffId) => <>{staffId}</>,
     },
     {
-      title: "Created Date",
+      title: t("created-date"),
       dataIndex: "createdDate",
       render: (createdDate) => <h3>{createdDate}</h3>,
     },
     {
-      title: "Action",
+      title: t("action"),
       render: (record) => {
         return (
           <div className='flex'>
@@ -123,7 +125,7 @@ function UserGroup(props) {
       <div className='flex justify-between mb-4'>
         <AntdButton
           className='antd-button'
-          text='Add User Group'
+          text={t("add-user-group")}
           onClick={() => {
             dispatch(openAddModal());
           }}

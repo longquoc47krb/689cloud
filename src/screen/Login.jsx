@@ -10,6 +10,7 @@ import { validateLoginForm } from "../middlewares/validate";
 import { AntdInput } from "../component/AntdInput";
 import {
   authSelector,
+  getIPAddress,
   login,
   loginStatusSelector,
   loginUser,
@@ -17,8 +18,11 @@ import {
 import LoadingButton from "../component/LoadingButton";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import LanguageSwitch from "../component/LanguageSwitch";
+import { useTranslation } from "react-i18next";
 const Login = (props) => {
   const { selectedData, title } = props;
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const loginStatus = useSelector(loginStatusSelector);
   const authStates = useSelector(authSelector);
@@ -42,7 +46,7 @@ const Login = (props) => {
     initialValues: initialValues,
     validationSchema: validateLoginForm,
     onSubmit: async (values) => {
-      if (title === "User Login") {
+      if (title === `${t("user-login")}`) {
         dispatch(loginUser(values));
       } else {
         dispatch(login(values));
@@ -55,10 +59,10 @@ const Login = (props) => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
-      toast.error("You haven't logged in yet");
+      toast.error(t("logout-msg"));
     }
-    toast.success(" Automatically detect IP Address");
-  }, []);
+    toast.success(t("auto-detect-ip"));
+  }, [authStates]);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);
@@ -66,7 +70,8 @@ const Login = (props) => {
 
   return (
     <>
-      <div className='bg-gray-200 flex items-center justify-center w-full h-[100vh]'>
+      <div className='bg-gray-200 flex items-center justify-center w-full h-[100vh] relative'>
+        <LanguageSwitch className='absolute top-10 right-20' />
         <Card style={{ width: 500 }}>
           <FormikProvider value={formikLogin}>
             <h1 className='title text-3xl flex justify-center'>{title}</h1>
@@ -75,7 +80,7 @@ const Login = (props) => {
                 <Col span={24}>
                   <FastField
                     component={AntdInput}
-                    label='Client IP'
+                    label={t("client-ip")}
                     name='client_ip_address'
                   />
                 </Col>
@@ -84,21 +89,21 @@ const Login = (props) => {
                 <Col span={24}>
                   <FastField
                     component={AntdInput}
-                    label='Company Domain'
+                    label={t("company-domain")}
                     name='company_domain'
                   />
                 </Col>
               </Row>
-              <LoadingButton loading={authStates.loading} />
+              <LoadingButton loading={authStates.loading} text={t("login")} />
               <span className='mt-4 text-base flex justify-center text-[#73879C] '>
-                Switch to
-                {title === "Admin Login" ? (
+                {t("switch-to")}
+                {title === t("admin-login") ? (
                   <Link to='/login'>
-                    <a className='mx-1'>User Login</a>
+                    <a className='mx-1'>{t("user-login")}</a>
                   </Link>
                 ) : (
                   <Link to='/admin-login'>
-                    <a className='mx-1'>Admin Login</a>
+                    <a className='mx-1'>{t("admin-login")}</a>
                   </Link>
                 )}
               </span>

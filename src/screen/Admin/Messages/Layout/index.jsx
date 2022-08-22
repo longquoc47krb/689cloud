@@ -6,6 +6,7 @@ import EditIcon from "../../../../assets/EditIcon";
 import TabLayout from "./Modal/TabLayout";
 import httpRequest from "../../../../services/httpRequest";
 import Table from "../../../../component/Table";
+import { useTranslation } from "react-i18next";
 const { Panel } = Collapse;
 
 const Layout = () => {
@@ -13,6 +14,7 @@ const Layout = () => {
   const [openTabLayOutModal, setOpenTabLayOutModal] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [tabData, setTabData] = useState([]);
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchSearchBox = async () => {
       const res = await httpRequest({
@@ -44,18 +46,18 @@ const Layout = () => {
   };
   const columns = [
     {
-      title: <h1 className='title'>Title</h1>,
+      title: <h1 className='title'>{t("title")}</h1>,
       dataIndex: "title",
       render: (title) => <h3>{title}</h3>,
     },
     {
-      title: <h1 className='title'>Number of search box</h1>,
+      title: <h1 className='title'>{t("number-of-search-box")}</h1>,
       dataIndex: "searchFields",
       align: "center",
       render: (searchFields) => <h3>{searchFields.length}</h3>,
     },
     {
-      title: <h1 className='title'>Action</h1>,
+      title: <h1 className='title'>{t("action")}</h1>,
       render: (record) => {
         return (
           <div className='flex'>
@@ -88,10 +90,10 @@ const Layout = () => {
               onClick={() => setOpenTabLayOutModal(true)}
               className='button bg-[#839C97] text-white px-2 flex gap-x-1 items-center'>
               <BiPlusMedical />
-              ADD TAB
+              {t("add-tab")}
             </button>
             <button className='button bg-[#839C97] text-white px-2 flex gap-x-1 items-center'>
-              PREVIEW
+              {t("preview")}
             </button>
           </div>
           <Table
@@ -106,7 +108,7 @@ const Layout = () => {
       </Collapse>
       <Collapse defaultActiveKey={["1"]} ghost>
         <Panel
-          header={<h1 className='title'>Search results</h1>}
+          header={<h1 className='title'> {t("search-results")}</h1>}
           showArrow={false}>
           hehee
         </Panel>

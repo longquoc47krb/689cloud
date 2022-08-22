@@ -13,12 +13,14 @@ import GroupDetails from "./GroupDetails";
 import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
 import { userSelector } from "../redux/slices/authSlice";
 import Table from "../component/Table";
+import { useTranslation } from "react-i18next";
 function GroupContent() {
   const [selectedGroupName, setSelectedGroupName] = useState("");
   const groupList = useSelector(groupListSelector);
   const userInfo = useSelector(userInfoSelector);
   const groupAllState = useSelector(groupSelector);
   const user = useSelector(userSelector);
+  const { t } = useTranslation();
   console.log("userInfo", userInfo);
   const selectedGroup = useSelector(selectedGroupSelector);
   const dispatch = useDispatch();
@@ -35,13 +37,13 @@ function GroupContent() {
       render: (id) => <h3>{id}</h3>,
     },
     {
-      title: <h1>Name</h1>,
+      title: <h1>{t("name")}</h1>,
       dataIndex: "name",
       align: "center",
       render: (name) => <h3>{name}</h3>,
     },
     {
-      title: <h1>Number of contents</h1>,
+      title: <h1>{t("number-of-contents")}</h1>,
       dataIndex: "number_of_contents_to_display",
       align: "center",
       width: "30%",
@@ -50,7 +52,7 @@ function GroupContent() {
       ),
     },
     {
-      title: <h1>Action</h1>,
+      title: <h1>{t("action")}</h1>,
       align: "center",
       render: (record) => {
         return (
@@ -77,7 +79,7 @@ function GroupContent() {
   ];
   const onDelete = (record) => {
     const title = [
-      `Are you sure, you want to delete `,
+      `${t("delete-msg")} `,
       <span className='text-red-500'>{record.name}</span>,
       ` ?`,
     ];
@@ -105,7 +107,7 @@ function GroupContent() {
 
   return (
     <div>
-      <p className='title'>GroupContent</p>
+      <p className='title'>{t("group-content")}</p>
       <Table
         columns={columns}
         data={groupList}

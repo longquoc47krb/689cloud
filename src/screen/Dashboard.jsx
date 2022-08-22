@@ -6,15 +6,19 @@ import { loginStatusSelector } from "../redux/slices/authSlice";
 import { userInfoSelector } from "../redux/slices/userSlice";
 import Profile from "./Profile";
 import GroupContent from "./GroupContent";
+import { useTranslation } from "react-i18next";
+import { tab } from "@testing-library/user-event/dist/tab";
+import LanguageSwitch from "../component/LanguageSwitch";
 const { TabPane } = Tabs;
 const Dashboard = (props) => {
   const { role } = props;
+  const { t } = useTranslation();
   const [activeKey, setActiveKey] = useState();
   const loginStatus = useSelector(loginStatusSelector);
   const userInfo = useSelector(userInfoSelector);
   useEffect(() => {
     if (loginStatus?.status === 200) {
-      toast.success("Successfully logged in");
+      toast.success(t("login-success"));
     }
   }, [loginStatus]);
   const changeTab = (activeKey) => {
@@ -22,6 +26,7 @@ const Dashboard = (props) => {
   };
   return (
     <div className='bg-gray-200 flex items-center justify-center w-full h-[120vh] relative'>
+      <LanguageSwitch className='absolute right-20 top-4' />
       <Card style={{ width: 700, minHeight: 600 }}>
         <Divider
           orientation='left'
@@ -30,10 +35,10 @@ const Dashboard = (props) => {
           {role}
         </Divider>
         <Tabs activeKey={activeKey} onChange={changeTab}>
-          <TabPane tab='Profile' key='1'>
+          <TabPane tab={t("profile")} key='1'>
             <Profile loading={userInfo ? false : true} role={role} />
           </TabPane>
-          <TabPane tab='Group' key='2'>
+          <TabPane tab={t("group")} key='2'>
             <GroupContent />
           </TabPane>
         </Tabs>
