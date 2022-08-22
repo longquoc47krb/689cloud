@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk("auth/login/user", async (user) => {
 });
 export const getIPAddress = createAsyncThunk("auth/client-ip", async () => {
   try {
-    const response = await axios.get("https://api.ipify.org");
+    const response = await axios.get("https://geolocation-db.com/json/");
     return response.data;
   } catch (err) {
     return err;
@@ -106,7 +106,7 @@ const authSlice = createSlice({
       state.loading = false;
     },
     [getIPAddress.fulfilled]: (state, action) => {
-      state.ip = action.payload;
+      state.ip = action.payload.IPv4;
       state.loading = true;
     },
   },

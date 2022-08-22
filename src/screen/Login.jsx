@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,9 +13,9 @@ import {
   login,
   loginStatusSelector,
   loginUser,
-  getIPAddress,
 } from "../redux/slices/authSlice";
 import LoadingButton from "../component/LoadingButton";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 const Login = (props) => {
   const { selectedData, title } = props;
@@ -24,9 +24,18 @@ const Login = (props) => {
   const authStates = useSelector(authSelector);
   const dispatch = useDispatch();
   const initialValues = {
-    client_ip_address: authStates.ip,
+    client_ip_address: "",
     company_domain: "",
   };
+  // auto get IP address
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get("https://geolocation-db.com/json/");
+      console.log(res.data);
+      formikLogin.setFieldValue("client_ip_address", res.data.IPv4);
+    };
+    getData();
+  }, []);
 
   // formik
   const formikLogin = useFormik({
@@ -48,9 +57,7 @@ const Login = (props) => {
     } else {
       toast.error("You haven't logged in yet");
     }
-  }, []);
-  useEffect(() => {
-    dispatch(getIPAddress());
+    toast.success(" Automatically detect IP Address");
   }, []);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
