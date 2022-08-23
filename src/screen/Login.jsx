@@ -2,12 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateLoginForm } from "../middlewares/validate";
-import { AntdInput } from "../component/AntdInput";
+import { AntdInput, AntdInputNumber } from "../component/AntdInput";
 import {
   authSelector,
   login,
@@ -23,11 +23,12 @@ const Login = (props) => {
   const { selectedData, title } = props;
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [ip, setIp] = useState("");
   const loginStatus = useSelector(loginStatusSelector);
   const authStates = useSelector(authSelector);
   const dispatch = useDispatch();
   const initialValues = {
-    client_ip_address: "",
+    client_ip_address: "0.0.0.0",
     company_domain: "",
   };
   // auto get IP address
@@ -35,7 +36,11 @@ const Login = (props) => {
     const getData = async () => {
       const res = await axios.get("https://geolocation-db.com/json/");
       console.log(res.data);
+      setIp(res.data.IPv4);
       formikLogin.setFieldValue("client_ip_address", res.data.IPv4);
+      console.log("client ip value", formikLogin.values.client_ip_address);
+      console.log("domain value", formikLogin.values.company_domain);
+      // formikLogin.setFieldValue("client_ip_address", "1.1.1.1");
     };
     getData();
   }, []);
@@ -50,11 +55,13 @@ const Login = (props) => {
       } else {
         dispatch(login(values));
       }
-      navigate("/dashboard");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     },
   });
   // notification for login
-  useMemo(() => {
+  useEffect(() => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
@@ -78,9 +85,10 @@ const Login = (props) => {
               <Row gutter={16} className='leading-8'>
                 <Col span={24}>
                   <FastField
-                    component={AntdInput}
+                    component={AntdInputNumber}
                     label={t("client-ip")}
                     name='client_ip_address'
+                    value={formikLogin.values.client_ip_address}
                   />
                 </Col>
               </Row>
@@ -93,7 +101,11 @@ const Login = (props) => {
                   />
                 </Col>
               </Row>
-              <LoadingButton loading={authStates.loading} text={t("login")} />
+              <LoadingButton
+                loading={authStates.loading}
+                text={t("login")}
+                loadingText={t("logging")}
+              />
               <span className='mt-4 text-base flex justify-center text-[#73879C] '>
                 {t("switch-to")}
                 {title === t("admin-login") ? (

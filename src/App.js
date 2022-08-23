@@ -11,6 +11,7 @@ import UserGroup from "./screen/Admin/UserGroup";
 import UsersPage from "./screen/Admin/Users";
 import Messages from "./screen/Admin/Messages";
 import { useTranslation } from "react-i18next";
+import Loading from "./component/Loading";
 function App() {
   const token = useSelector((state) => state.auth.user?.access_token);
   const user = useSelector(userSelector);

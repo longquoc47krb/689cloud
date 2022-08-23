@@ -1,4 +1,5 @@
 import { DatePicker, Form, Input, Select } from "antd";
+import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
 import React from "react";
 const { Item } = Form;
@@ -46,8 +47,8 @@ function AntdInputPassword(props) {
 }
 function AntdDatePicker(props) {
   const dateFormat = "DD/MM/YYYY";
-  const { field, label } = props;
-  const { value, onChange, onBlur, name } = field;
+  const { form, field, label } = props;
+  const { value, onBlur, name } = field;
   return (
     <>
       <Item>
@@ -55,6 +56,28 @@ function AntdDatePicker(props) {
         <DatePicker
           className='w-full'
           format={dateFormat}
+          name={name}
+          value={value}
+          onChange={(value) => form.setFieldValue(name, value)}
+          onBlur={onBlur}
+        />
+        <p className='error-message'>
+          <ErrorMessage name={name} />
+        </p>
+      </Item>
+    </>
+  );
+}
+const DUMB_IP_MASK = "0[0][0].0[0][0].0[0][0].0[0][0]";
+function AntdInputNumber(props) {
+  const { field, label, value } = props;
+  const { name, onBlur, onChange } = field;
+  return (
+    <>
+      <Item>
+        <h1 className='title'>{label}</h1>
+        <MaskedInput
+          mask={DUMB_IP_MASK}
           name={name}
           value={value}
           onChange={onChange}
@@ -101,4 +124,10 @@ function AntdSelect(props) {
     </>
   );
 }
-export { AntdInput, AntdInputPassword, AntdDatePicker, AntdSelect };
+export {
+  AntdInput,
+  AntdInputPassword,
+  AntdDatePicker,
+  AntdSelect,
+  AntdInputNumber,
+};
