@@ -6,7 +6,7 @@ import { loginStatusSelector } from "../redux/slices/authSlice";
 import { userInfoSelector } from "../redux/slices/userSlice";
 import Profile from "./Profile";
 import GroupContent from "./GroupContent";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { tab } from "@testing-library/user-event/dist/tab";
 import LanguageSwitch from "../component/LanguageSwitch";
 const { TabPane } = Tabs;
@@ -20,7 +20,7 @@ const Dashboard = (props) => {
     if (loginStatus?.status === 200) {
       toast.success(t("login-success"));
     }
-  }, [loginStatus]);
+  }, []);
   const changeTab = (activeKey) => {
     setActiveKey(activeKey);
   };
@@ -43,9 +43,19 @@ const Dashboard = (props) => {
           </TabPane>
         </Tabs>
       </Card>
-      <ToastContainer />
+      <ToastContainer
+        position='top-left'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
 
-export default Dashboard;
+export default withTranslation()(Dashboard);

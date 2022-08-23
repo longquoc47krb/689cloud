@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Card, Row } from "antd";
 import { FastField, FormikProvider, useFormik, Form } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,7 +10,6 @@ import { validateLoginForm } from "../middlewares/validate";
 import { AntdInput } from "../component/AntdInput";
 import {
   authSelector,
-  getIPAddress,
   login,
   loginStatusSelector,
   loginUser,
@@ -19,7 +18,7 @@ import LoadingButton from "../component/LoadingButton";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import LanguageSwitch from "../component/LanguageSwitch";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 const Login = (props) => {
   const { selectedData, title } = props;
   const { t } = useTranslation();
@@ -55,14 +54,14 @@ const Login = (props) => {
     },
   });
   // notification for login
-  useEffect(() => {
+  useMemo(() => {
     if (loginStatus) {
       toast.error(loginStatus?.message);
     } else {
       toast.error(t("logout-msg"));
     }
     toast.success(t("auto-detect-ip"));
-  }, [authStates]);
+  }, [loginStatus]);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);
@@ -109,10 +108,20 @@ const Login = (props) => {
               </span>
             </Form>
           </FormikProvider>
-          <ToastContainer />
+          <ToastContainer
+            position='top-left'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Card>
       </div>
     </>
   );
 };
-export default Login;
+export default withTranslation("translation")(Login);

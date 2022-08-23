@@ -66,5 +66,9 @@
   "login-success": "Successfully logged in",
   "logout-msg": "You haven't logged in yet",
   "delete-msg": "Are you sure, you want to delete ",
-  "auto-detect-ip": "Automatically detect IP Address"
+  "auto-detect-ip": "Automatically detect IP Address",
+  "required": "Required",
+  "min-date": "Min date is today",
+  "max-date": "Max date is contract end",
+  "min-date-contract-end": " Min date is contract start"
 }

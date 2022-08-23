@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { Select } from "antd";
 import { CircleFlag } from "react-circle-flags";
-import Item from "antd/lib/list/Item";
-function LanguageSwitch(props) {
+const LanguageSwitch = (props) => {
   const { className } = props;
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(localStorage.getItem("lang"));
@@ -25,23 +24,10 @@ function LanguageSwitch(props) {
       translation: "translation.JP",
     },
   ];
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = async (lng) => {
+    await i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
   };
-  function getLang(language) {
-    language = localStorage.getItem("lang");
-    switch (lang) {
-      case "EN":
-        return "EN";
-      case "VN":
-        return "VN";
-      case "JP":
-        return "JP";
-      default:
-        return "EN";
-    }
-  }
   function titleByLanguage(language) {
     language = localStorage.getItem("lang");
     switch (lang) {
@@ -85,6 +71,6 @@ function LanguageSwitch(props) {
       </Select>
     </div>
   );
-}
+};
 
-export default LanguageSwitch;
+export default withTranslation()(LanguageSwitch);
