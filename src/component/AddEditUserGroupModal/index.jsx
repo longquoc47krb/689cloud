@@ -7,7 +7,12 @@ import { useDispatch } from "react-redux";
 import TrashIcon from "../../assets/TrashIcon";
 import { validateUserGroupForm } from "../../middlewares/validate";
 import { resetModal } from "../../redux/slices/adminModalSlice";
-import { AntdDatePicker, AntdInput, AntdInputPassword } from "../AntdInput";
+import {
+  AntdDatePicker,
+  AntdInput,
+  AntdInputNumber,
+  AntdInputPassword,
+} from "../AntdInput";
 import AntdButton from "../Button";
 
 const { Text } = Typography;
@@ -36,7 +41,7 @@ function AddEditUserGroupModal(props) {
     validateOnBlur: true,
     onSubmit: (values) => {},
   });
-  const { values, setFieldValue, setValues } = formik;
+  const { values, setFieldValue, setValues, handleChange } = formik;
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
@@ -53,7 +58,11 @@ function AddEditUserGroupModal(props) {
               <FastField component={AntdInput} label='Name' name='name' />
             </Col>
             <Col span={12}>
-              <FastField component={AntdInput} label='Session' name='session' />
+              <FastField
+                component={AntdInputNumber}
+                label='Session'
+                name='session'
+              />
             </Col>
           </Row>
           <Row gutter={16}>
@@ -63,9 +72,6 @@ function AddEditUserGroupModal(props) {
                 label='Staff ID'
                 name='staffId'
               />
-            </Col>
-            <Col span={12}>
-              <FastField component={AntdInput} label='Session' name='session' />
             </Col>
           </Row>
           <Text strong id='authentication-text'>

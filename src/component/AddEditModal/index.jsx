@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { validateUserForm } from "../../middlewares/validate";
 import { resetModal } from "../../redux/slices/adminModalSlice";
-import { AntdDatePicker, AntdInput } from "../AntdInput";
+import { AntdDatePicker, AntdInput, AntdInputNumber } from "../AntdInput";
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const AddEditUserModal = (props) => {
             </Col>
             <Col span={12}>
               <FastField
-                component={AntdInput}
+                component={AntdInputNumber}
                 label='Suspension'
                 name='suspension'
               />

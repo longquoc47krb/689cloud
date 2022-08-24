@@ -69,7 +69,7 @@ function AntdDatePicker(props) {
   );
 }
 const DUMB_IP_MASK = "0[0][0].0[0][0].0[0][0].0[0][0]";
-function AntdInputNumber(props) {
+function AntdInputIP(props) {
   const { field, label, value } = props;
   const { name, onBlur, onChange } = field;
   return (
@@ -80,6 +80,45 @@ function AntdInputNumber(props) {
           mask={DUMB_IP_MASK}
           name={name}
           value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        <p className='error-message'>
+          <ErrorMessage name={name} />
+        </p>
+      </Item>
+    </>
+  );
+}
+function AntdInputNumber(props) {
+  const { form, field, label, value } = props;
+  const { name, onBlur, onChange } = field;
+  const onKeyDown = (event) => {
+    const characterCode = event.key;
+    if (characterCode === "Backspace" || characterCode === "Delete") return;
+
+    const characterNumber = Number(characterCode);
+    if (characterNumber >= 0 && characterNumber <= 9) {
+      if (event.currentTarget.value && event.currentTarget.value.length) {
+        return;
+      } else if (characterNumber === 0) {
+        event.preventDefault();
+      }
+    } else {
+      event.preventDefault();
+    }
+  };
+  console.log("field", field);
+  console.log("form", form);
+  return (
+    <>
+      <Item>
+        <h1 className='title'>{label}</h1>
+        <Input
+          type='number'
+          name={name}
+          value={value}
+          onKeyDown={onKeyDown}
           onChange={onChange}
           onBlur={onBlur}
         />
@@ -129,5 +168,6 @@ export {
   AntdInputPassword,
   AntdDatePicker,
   AntdSelect,
+  AntdInputIP,
   AntdInputNumber,
 };

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateLoginForm } from "../middlewares/validate";
-import { AntdInput, AntdInputNumber } from "../component/AntdInput";
+import { AntdInput, AntdInputIP } from "../component/AntdInput";
 import {
   authSelector,
   login,
@@ -61,14 +61,14 @@ const Login = (props) => {
     },
   });
   // notification for login
-  useEffect(() => {
-    if (loginStatus) {
-      toast.error(loginStatus?.message);
-    } else {
-      toast.error(t("logout-msg"));
-    }
-    toast.success(t("auto-detect-ip"));
-  }, [loginStatus]);
+  // useEffect(() => {
+  //   if (loginStatus) {
+  //     toast.error(loginStatus?.message);
+  //   } else {
+  //     toast.error(t("logout-msg"));
+  //   }
+  //   toast.success(t("auto-detect-ip"));
+  // }, [loginStatus]);
   const { setValues, handleSubmit } = formikLogin;
   useEffect(() => {
     setValues(initialValues);
@@ -85,7 +85,7 @@ const Login = (props) => {
               <Row gutter={16} className='leading-8'>
                 <Col span={24}>
                   <FastField
-                    component={AntdInputNumber}
+                    component={AntdInputIP}
                     label={t("client-ip")}
                     name='client_ip_address'
                     value={formikLogin.values.client_ip_address}
