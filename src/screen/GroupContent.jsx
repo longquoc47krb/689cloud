@@ -21,13 +21,11 @@ function GroupContent() {
   const groupAllState = useSelector(groupSelector);
   const user = useSelector(userSelector);
   const { t } = useTranslation();
-  console.log("userInfo", userInfo);
   const selectedGroup = useSelector(selectedGroupSelector);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getGroupContent({ domain: user.domain }));
   }, [dispatch, user.domain]);
-  console.log("groupList", groupList);
 
   const columns = [
     {
@@ -91,8 +89,6 @@ function GroupContent() {
     });
   };
   const onEdit = (record) => {
-    console.log("record", record);
-    console.log("userInfo domain", userInfo.domain);
     setSelectedGroupName(record.name);
     dispatch(
       getSelectedGroupContent({
@@ -100,10 +96,7 @@ function GroupContent() {
         domain: userInfo.domain,
       })
     );
-
-    console.log("selectedGroup", selectedGroup);
   };
-  console.log("localstorage groupcontent", userFromStorage);
 
   return (
     <div>

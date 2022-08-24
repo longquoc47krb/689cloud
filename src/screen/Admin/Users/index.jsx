@@ -106,7 +106,6 @@ function UsersPage() {
       onOk: () => {},
     });
   };
-  console.log("users", users);
   // handle searchBar
   const onChange = (value) => {
     if (value === "") {

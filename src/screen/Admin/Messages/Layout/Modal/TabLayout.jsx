@@ -14,7 +14,6 @@ const TabLayout = (props) => {
   const { title, open, selectedData, handleCancel } = props;
   const { t } = useTranslation();
   const [boards, setBoards] = useState({});
-  console.log("selectedData", selectedData);
   // drag n drop feature
 
   const initialValues = {
@@ -43,7 +42,6 @@ const TabLayout = (props) => {
   useEffect(() => {
     setBoards(SearchBoxBoards);
   }, [selectedData]);
-  console.log("boards", boards);
   // drag and drop feature
   const onDragEnd = (result, boards, setBoards) => {
     if (!result.destination) return;

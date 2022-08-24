@@ -35,11 +35,8 @@ const Login = (props) => {
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get("https://geolocation-db.com/json/");
-      console.log(res.data);
       setIp(res.data.IPv4);
       formikLogin.setFieldValue("client_ip_address", res.data.IPv4);
-      console.log("client ip value", formikLogin.values.client_ip_address);
-      console.log("domain value", formikLogin.values.company_domain);
       // formikLogin.setFieldValue("client_ip_address", "1.1.1.1");
     };
     getData();

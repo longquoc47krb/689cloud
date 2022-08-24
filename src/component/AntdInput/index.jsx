@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Select } from "antd";
+import { DatePicker, Form, Input, InputNumber, Select } from "antd";
 import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
 import React from "react";
@@ -96,31 +96,29 @@ function AntdInputNumber(props) {
   const onKeyDown = (event) => {
     const characterCode = event.key;
     if (characterCode === "Backspace" || characterCode === "Delete") return;
-
     const characterNumber = Number(characterCode);
     if (characterNumber >= 0 && characterNumber <= 9) {
       if (event.currentTarget.value && event.currentTarget.value.length) {
         return;
       } else if (characterNumber === 0) {
-        event.preventDefault();
+        event.preventDefault(); // if you dont want zero at first
+        // return; // if you wanna zero at first
       }
     } else {
       event.preventDefault();
     }
   };
-  console.log("field", field);
-  console.log("form", form);
   return (
     <>
       <Item>
         <h1 className='title'>{label}</h1>
         <Input
-          type='number'
           name={name}
           value={value}
           onKeyDown={onKeyDown}
           onChange={onChange}
           onBlur={onBlur}
+          style={{ width: "100%" }}
         />
         <p className='error-message'>
           <ErrorMessage name={name} />

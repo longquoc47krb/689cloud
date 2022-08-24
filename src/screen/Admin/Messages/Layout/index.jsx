@@ -40,9 +40,7 @@ const Layout = () => {
   };
   const onEdit = (record) => {
     setIsEditting(true);
-    console.log("record: ", record);
     setSelected(record);
-    console.log("selected", selected);
   };
   const columns = [
     {

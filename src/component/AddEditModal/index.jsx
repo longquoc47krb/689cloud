@@ -18,7 +18,6 @@ const AddEditUserModal = (props) => {
     contractEnd: moment(selectedData.contractEnd) ?? moment(),
     password: selectedData?.password ?? "",
   };
-  console.log("selectedData", selectedData);
   // formik
   const formik = useFormik({
     initialValues: initialValues,
