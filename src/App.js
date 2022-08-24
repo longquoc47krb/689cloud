@@ -1,17 +1,15 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "antd/dist/antd.min.css";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { authSelector, userSelector } from "./redux/slices/authSlice";
-import Login from "./screen/Login";
-import Dashboard from "./screen/Dashboard";
-import NotFound from "./screen/NotFound";
-import AdminLayout from "./screen/Admin/layout";
 import Blank from "./screen/Admin/Blank";
+import AdminLayout from "./screen/Admin/layout";
+import Messages from "./screen/Admin/Messages";
 import UserGroup from "./screen/Admin/UserGroup";
 import UsersPage from "./screen/Admin/Users";
-import Messages from "./screen/Admin/Messages";
-import { useTranslation } from "react-i18next";
-import Loading from "./component/Loading";
+import Dashboard from "./screen/Dashboard";
+import Login from "./screen/Login";
 function App() {
   const token = useSelector((state) => state.auth.user?.access_token);
   const user = useSelector(userSelector);
@@ -56,33 +54,33 @@ function App() {
       </Routes>
     );
   }
-  if (!token && !auth.loading) {
-    return (
-      <>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/*' element={<GuessRoutes />} />
-          </Routes>
-        </BrowserRouter>
-      </>
-    );
-  } else if (token && user.role_level === 4) {
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path='/*' element={<AdminRoutes />} />
-        </Routes>
-      </BrowserRouter>
-    );
-  } else {
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path='/*' element={<UserRoutes />} />
-        </Routes>
-      </BrowserRouter>
-    );
-  }
+  // if (!token && !auth.loading) {
+  //   return (
+  //     <>
+  //       <BrowserRouter>
+  //         <Routes>
+  //           <Route path='/*' element={<GuessRoutes />} />
+  //         </Routes>
+  //       </BrowserRouter>
+  //     </>
+  //   );
+  // } else if (token && user.role_level === 4) {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/*' element={<AdminRoutes />} />
+      </Routes>
+    </BrowserRouter>
+  );
+  // } else {
+  //   return (
+  //     <BrowserRouter>
+  //       <Routes>
+  //         <Route path='/*' element={<UserRoutes />} />
+  //       </Routes>
+  //     </BrowserRouter>
+  //   );
+  // }
 }
 
 export default App;

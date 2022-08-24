@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, InputNumber, Select } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
 import React from "react";
@@ -91,7 +91,7 @@ function AntdInputIP(props) {
   );
 }
 function AntdInputNumber(props) {
-  const { form, field, label, value } = props;
+  const { field, label, value } = props;
   const { name, onBlur, onChange } = field;
   const onKeyDown = (event) => {
     const characterCode = event.key;

@@ -32,10 +32,28 @@ const operation = [
   },
 ];
 const searchBoxItems = [
-  { key: "SEARCH_BY_AUTHOR", value: "Search by author" },
-  { key: "SEARCH_BY_TITLE", value: "Search by title" },
-  { key: "FILTER_BY_DATE_RANGE", value: "Filter by date range" },
-  { key: "FILTER_BY_GROUP", value: "Filter by group " },
+  { key: "SEARCH_BY_AUTHOR", content: "Search by author" },
+  { key: "SEARCH_BY_TITLE", content: "Search by title" },
+  { key: "FILTER_BY_DATE_RANGE", content: "Filter by date range" },
+  { key: "FILTER_BY_GROUP", content: "Filter by group " },
+];
+const searchBoxItems2 = [
+  {
+    key: "SEARCH_BY_PARAM_1",
+    content: "Search by param_1",
+    value: 12,
+  },
+  {
+    key: "FILTER_BY_GENRE",
+    content: "Filter by genre",
+    value: 10,
+  },
+
+  {
+    key: "FILTER_BY_PARAM_2",
+    content: "Filter by parameter_2",
+    value: 8,
+  },
 ];
 const options = [
   { value: 5, text: "5" },
@@ -48,6 +66,7 @@ const constants = {
   searchFields,
   operation,
   searchBoxItems,
+  searchBoxItems2,
   options,
 };
 export default constants;

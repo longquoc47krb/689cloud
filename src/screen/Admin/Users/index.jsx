@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../../assets/EditIcon";
 import TrashIcon from "../../../assets/TrashIcon";
 import AddEditUserModal from "../../../component/AddEditModal";
-import { AntdSelect } from "../../../component/AntdInput";
 import AntdSearchAutocomplete from "../../../component/AntSearchAutocomplete";
 import AntdButton from "../../../component/Button";
 import constants from "../../../constants";
@@ -83,9 +82,9 @@ function UsersPage() {
   useEffect(() => {
     setRecordsPerPage(constants.options[0].value);
   }, [modal]);
-  const handleSelect = (value) => {
-    setRecordsPerPage(value);
-  };
+  // const handleSelect = (value) => {
+  //   setRecordsPerPage(value);
+  // };
   useEffect(() => {
     dispatch(getUsers(users?.filter));
   }, [users?.filter]);

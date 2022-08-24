@@ -10,7 +10,7 @@ import {
 import { TbEdit, TbTrash } from "react-icons/tb";
 import { Modal } from "antd";
 import GroupDetails from "./GroupDetails";
-import { userFromStorage, userInfoSelector } from "../redux/slices/userSlice";
+import { userInfoSelector } from "../redux/slices/userSlice";
 import { userSelector } from "../redux/slices/authSlice";
 import Table from "../component/Table";
 import { useTranslation } from "react-i18next";
