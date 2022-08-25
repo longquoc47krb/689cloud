@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   group: groupSlice,
   modal: adminModalSlice,
   usergroup: usergroupSlice,
-  searchBoxCounter: searchBoxSlice,
+  searchBox: searchBoxSlice,
 });
 export const store = configureStore({
   reducer: rootReducer,

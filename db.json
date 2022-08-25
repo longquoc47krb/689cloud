@@ -3223,16 +3223,19 @@
           "searchFields": [
             {
               "key": "SEARCH_BY_PARAM_1",
-              "value": "Search by param_1"
+              "content": "Search by param_1",
+              "value": 12
             },
             {
               "key": "FILTER_BY_GENRE",
-              "value": "Filter by genre"
+              "content": "Filter by genre",
+              "value": 12
             },
 
             {
               "key": "FILTER_BY_PARAM_2",
-              "value": "Filter by parameter_2"
+              "content": "Filter by parameter_2",
+              "value": 12
             }
           ]
         },
@@ -3241,7 +3244,8 @@
           "searchFields": [
             {
               "key": "SEARCH_BY_PUBLISHER",
-              "value": "Search by publisher"
+              "content": "Search by publisher",
+              "value": 5
             }
           ]
         }

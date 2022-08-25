@@ -31,15 +31,14 @@ const userGroupSlice = createSlice({
       state.filter = null;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getUserGroups.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getUserGroups.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      });
+  extraReducers: {
+    [getUserGroups.pending]: (state) => {
+      state.loading = true;
+    },
+    [getUserGroups.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+    },
   },
 });
 export const { setFilter, removeFilter } = userGroupSlice.actions;

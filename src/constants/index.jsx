@@ -32,10 +32,26 @@ const operation = [
   },
 ];
 const searchBoxItems = [
-  { key: "SEARCH_BY_AUTHOR", content: "Search by author" },
-  { key: "SEARCH_BY_TITLE", content: "Search by title" },
-  { key: "FILTER_BY_DATE_RANGE", content: "Filter by date range" },
-  { key: "FILTER_BY_GROUP", content: "Filter by group " },
+  { key: "SEARCH_BY_AUTHOR", content: "Search by author", value: 12 },
+  { key: "SEARCH_BY_TITLE", content: "Search by title", value: 12 },
+  { key: "FILTER_BY_DATE_RANGE", content: "Filter by date range", value: 12 },
+  { key: "FILTER_BY_GROUP", content: "Filter by group ", value: 12 },
+  {
+    key: "SEARCH_BY_PARAM_1",
+    content: "Search by param_1",
+    value: 12,
+  },
+  {
+    key: "FILTER_BY_GENRE",
+    content: "Filter by genre",
+    value: 12,
+  },
+
+  {
+    key: "FILTER_BY_PARAM_2",
+    content: "Filter by parameter_2",
+    value: 12,
+  },
 ];
 const searchBoxItems2 = [
   {

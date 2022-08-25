@@ -4,7 +4,6 @@ import { BiPlusMedical } from "react-icons/bi";
 import TrashIcon from "../../../../assets/TrashIcon";
 import EditIcon from "../../../../assets/EditIcon";
 import TabLayout from "./Modal/TabLayout";
-import httpRequest from "../../../../services/httpRequest";
 import Table from "../../../../component/Table";
 import { useTranslation } from "react-i18next";
 const { Panel } = Collapse;
@@ -17,11 +16,9 @@ const Layout = () => {
   const { t } = useTranslation();
   useEffect(() => {
     const fetchSearchBox = async () => {
-      const res = await httpRequest({
-        url: "/messages",
-        method: "GET",
-      });
-      setTabData(res[0].tabs);
+      // const res = await fetch("http://localhost:8000/messages");
+      // setTabData(res[0].tabs);
+      // console.log("res", res);
     };
     fetchSearchBox();
   }, []);

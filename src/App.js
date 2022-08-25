@@ -54,33 +54,33 @@ function App() {
       </Routes>
     );
   }
-  // if (!token && !auth.loading) {
-  //   return (
-  //     <>
-  //       <BrowserRouter>
-  //         <Routes>
-  //           <Route path='/*' element={<GuessRoutes />} />
-  //         </Routes>
-  //       </BrowserRouter>
-  //     </>
-  //   );
-  // } else if (token && user.role_level === 4) {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/*' element={<AdminRoutes />} />
-      </Routes>
-    </BrowserRouter>
-  );
-  // } else {
-  //   return (
-  //     <BrowserRouter>
-  //       <Routes>
-  //         <Route path='/*' element={<UserRoutes />} />
-  //       </Routes>
-  //     </BrowserRouter>
-  //   );
-  // }
+  if (!token && !auth.loading) {
+    return (
+      <>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/*' element={<GuessRoutes />} />
+          </Routes>
+        </BrowserRouter>
+      </>
+    );
+  } else if (token && user.role_level === 4) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path='/*' element={<AdminRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  } else {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path='/*' element={<UserRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
