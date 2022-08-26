@@ -24,6 +24,7 @@ const validateUserForm = Yup.object().shape({
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_@./#&+-]{6,}$/,
       "At least 1 number, at least 1 lowercase, at least 1 uppercase"
     ),
+  email: Yup.string().required("Required").email("Invalid email address"),
 });
 const validateUserGroupForm = Yup.object().shape({
   name: Yup.string().required("Required").max(64, "Max length 64"),

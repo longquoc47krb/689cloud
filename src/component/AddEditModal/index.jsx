@@ -1,14 +1,31 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, Modal, Row, Form, Input } from "antd";
-import { FastField, FormikProvider, useFormik, ErrorMessage } from "formik";
+import { Col, Modal, Row, Form, Input, Button } from "antd";
+import {
+  FastField,
+  Field,
+  FormikProvider,
+  useFormik,
+  ErrorMessage,
+} from "formik";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { validateUserForm } from "../../middlewares/validate";
-import { resetModal } from "../../redux/slices/adminModalSlice";
-import { AntdDatePicker, AntdInput } from "../AntdInput";
+import {
+  setDisabled,
+  resetModal,
+  handleSaveCancel,
+} from "../../redux/slices/adminModalSlice";
+import { AntdDatePicker, AntdInput, AntdInputGroup } from "../AntdInput";
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
+  // const [email, setEmail] = useState("example@689cloud.com");
+  const disabled = useSelector((state) => state.modal.disabled);
+  const email = useSelector((state) => state.modal.selectedData.email);
+  console.log("email", email);
+  const [tempEmail, setTempEmail] = useState(email);
   const dispatch = useDispatch();
   const initialValues = {
     id: selectedData?.id ?? "",
@@ -17,6 +34,7 @@ const AddEditUserModal = (props) => {
     contractStart: moment(selectedData.contractStart) ?? moment(),
     contractEnd: moment(selectedData.contractEnd) ?? moment(),
     password: selectedData?.password ?? "",
+    email: selectedData?.email ?? email,
   };
   // formik
   const formik = useFormik({
@@ -27,19 +45,26 @@ const AddEditUserModal = (props) => {
   const handleCancel = () => {
     dispatch(resetModal());
   };
-  const { setValues } = formik;
+  const { setValues, setFieldValue } = formik;
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
-  function handleChangeUpperCase(event) {
-    const { value } = event.target;
-    formik.setFieldValue("name", value);
-    formik.setFieldValue("suspension", value.toUpperCase());
+  function saveEmailInfo() {
+    setFieldValue("email", formik.values.email);
+    dispatch(handleSaveCancel({ email: formik.values.email }));
   }
-  console.log("formik suspension", formik.values.suspension);
-  console.log("formik name", formik.values.name);
+  function cancelEmailInfo() {
+    setTempEmail(email);
+    dispatch(handleSaveCancel({ email: email }));
+    setFieldValue("email", email);
+  }
   return (
-    <Modal title={title} centered visible={open} onCancel={handleCancel}>
+    <Modal
+      title={title}
+      centered
+      visible={open}
+      onCancel={handleCancel}
+      width={1000}>
       <FormikProvider value={formik}>
         <Form>
           <Row gutter={[48, 40]} className='leading-8'>
@@ -58,7 +83,15 @@ const AddEditUserModal = (props) => {
                 label='Contract Start'
                 name='contractStart'
               />
-              <FastField component={AntdInput} label='Param 01' name='param1' />
+              <Field
+                component={AntdInputGroup}
+                label='Email'
+                name='email'
+                disabled={disabled}
+                onCancelClick={cancelEmailInfo}
+                onChangeClick={() => dispatch(setDisabled())}
+                onSaveClick={saveEmailInfo}
+              />
               <FastField component={AntdInput} label='Param 03' name='param3' />
               <FastField component={AntdInput} label='Param 05' name='param5' />
             </Col>

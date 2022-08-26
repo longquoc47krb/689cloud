@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   toggle: false,
   isEditting: false,
-  selectedData: {},
+  selectedData: {
+    email: "example@689cloud.com",
+  },
+  disabled: false,
 };
 const adminModalSlice = createSlice({
   name: "modal",
@@ -13,6 +16,16 @@ const adminModalSlice = createSlice({
       state.toggle = true;
       state.isEditting = false;
       state.selectedData = {};
+    },
+    setDisabled: (state, action) => {
+      state.disabled = !state.disabled;
+    },
+    handleSaveCancel: (state, action) => {
+      state.disabled = !state.disabled;
+      state.selectedData = { ...action.payload, email: action.payload.email };
+    },
+    setSelectedData: (state, action) => {
+      state.selectedData = action.payload;
     },
     openEditModal: (state, action) => {
       state.toggle = true;
@@ -27,6 +40,11 @@ const adminModalSlice = createSlice({
   },
 });
 
-export const { openAddModal, openEditModal, resetModal } =
-  adminModalSlice.actions;
+export const {
+  openAddModal,
+  openEditModal,
+  resetModal,
+  setDisabled,
+  handleSaveCancel,
+} = adminModalSlice.actions;
 export default adminModalSlice.reducer;

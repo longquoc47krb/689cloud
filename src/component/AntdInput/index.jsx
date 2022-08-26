@@ -1,12 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { DatePicker, Form, Input, Select } from "antd";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
 import React from "react";
 const { Item } = Form;
 const { Option } = Select;
 function AntdInput(props) {
-  const { field, label, width, uppercase, onChange: onChangeCustom } = props;
+  const {
+    field,
+    label,
+    width,
+    uppercase,
+    onChange: onChangeCustom,
+    disabled,
+  } = props;
   const { value, onChange, onBlur, name } = field;
   const handleChange = (e) => {
     const { value } = e.target;
@@ -17,7 +24,6 @@ function AntdInput(props) {
       },
     };
     onChange(customEvent);
-    console.log("onChange", onChange(customEvent));
     if (onChangeCustom) {
       onChangeCustom(value);
     }
@@ -27,12 +33,90 @@ function AntdInput(props) {
       <Item>
         <h1 className='title'>{label}</h1>
         <Input
+          disabled={disabled}
           name={name}
           value={value}
           onBlur={onBlur}
           onChange={handleChange}
           style={{ width: width }}
         />
+        <p className='error-message'>
+          <ErrorMessage name={name} />
+        </p>
+      </Item>
+    </>
+  );
+}
+function AntdInputGroup(props) {
+  const {
+    field,
+    label,
+    uppercase,
+    onChange: onChangeCustom,
+    disabled,
+    onSaveClick,
+    onCancelClick,
+    onChangeClick,
+  } = props;
+  console.log("disabled", disabled);
+  const { value, onChange, onBlur, name } = field;
+  const handleChange = (e) => {
+    const { value } = e.target;
+    var customEvent = {
+      target: {
+        value: uppercase ? value.toUpperCase() : value,
+        name,
+      },
+    };
+    onChange(customEvent);
+    if (onChangeCustom) {
+      onChangeCustom(value);
+    }
+  };
+  return (
+    <>
+      <Item>
+        <h1 className='title'>{label}</h1>
+        <Input.Group>
+          <Input
+            disabled={disabled}
+            name={name}
+            value={value}
+            onBlur={onBlur}
+            onChange={handleChange}
+            style={
+              !disabled
+                ? { width: "calc(100% - 165px)" }
+                : { width: "calc(100% - 81px)" }
+            }
+          />
+          {!disabled ? (
+            <>
+              <Button
+                danger
+                type='primary'
+                style={{ width: 80 }}
+                onClick={onCancelClick}>
+                Cancel
+              </Button>
+              <Button
+                type='primary'
+                style={{ width: 80 }}
+                onClick={onSaveClick}>
+                Save
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                type='primary'
+                style={{ width: 80 }}
+                onClick={onChangeClick}>
+                Change
+              </Button>
+            </>
+          )}
+        </Input.Group>
         <p className='error-message'>
           <ErrorMessage name={name} />
         </p>
@@ -183,4 +267,5 @@ export {
   AntdSelect,
   AntdInputIP,
   AntdInputNumber,
+  AntdInputGroup,
 };
