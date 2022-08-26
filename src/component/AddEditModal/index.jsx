@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, Modal, Row, Form } from "antd";
-import { FastField, FormikProvider, useFormik } from "formik";
+import { Col, Modal, Row, Form, Input } from "antd";
+import { FastField, FormikProvider, useFormik, ErrorMessage } from "formik";
 import moment from "moment";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { validateUserForm } from "../../middlewares/validate";
 import { resetModal } from "../../redux/slices/adminModalSlice";
-import { AntdDatePicker, AntdInput, AntdInputNumber } from "../AntdInput";
+import { AntdDatePicker, AntdInput } from "../AntdInput";
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
   const dispatch = useDispatch();
@@ -31,13 +31,28 @@ const AddEditUserModal = (props) => {
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
+  function handleChangeUpperCase(event) {
+    const { value } = event.target;
+    formik.setFieldValue("name", value);
+    formik.setFieldValue("suspension", value.toUpperCase());
+  }
+  console.log("formik suspension", formik.values.suspension);
+  console.log("formik name", formik.values.name);
   return (
     <Modal title={title} centered visible={open} onCancel={handleCancel}>
       <FormikProvider value={formik}>
         <Form>
           <Row gutter={[48, 40]} className='leading-8'>
             <Col span={12}>
-              <FastField component={AntdInput} label='Name' name='name' />
+              <FastField
+                name='name'
+                component={AntdInput}
+                label='Name'
+                uppercase={true}
+                // onChange={(value) => {
+                //   formik.setFieldValue("suspension", value.toUpperCase());
+                // }}
+              />
               <FastField
                 component={AntdDatePicker}
                 label='Contract Start'
@@ -49,9 +64,9 @@ const AddEditUserModal = (props) => {
             </Col>
             <Col span={12}>
               <FastField
-                component={AntdInputNumber}
-                label='Suspension'
                 name='suspension'
+                component={AntdInput}
+                label='Suspension'
               />
               <FastField
                 component={AntdDatePicker}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { DatePicker, Form, Input, Select } from "antd";
 import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
@@ -5,8 +6,22 @@ import React from "react";
 const { Item } = Form;
 const { Option } = Select;
 function AntdInput(props) {
-  const { field, label, width } = props;
+  const { field, label, width, uppercase, onChange: onChangeCustom } = props;
   const { value, onChange, onBlur, name } = field;
+  const handleChange = (e) => {
+    const { value } = e.target;
+    var customEvent = {
+      target: {
+        value: uppercase ? value.toUpperCase() : value,
+        name,
+      },
+    };
+    onChange(customEvent);
+    console.log("onChange", onChange(customEvent));
+    if (onChangeCustom) {
+      onChangeCustom(value);
+    }
+  };
   return (
     <>
       <Item>
@@ -15,7 +30,7 @@ function AntdInput(props) {
           name={name}
           value={value}
           onBlur={onBlur}
-          onChange={onChange}
+          onChange={handleChange}
           style={{ width: width }}
         />
         <p className='error-message'>
@@ -129,15 +144,15 @@ function AntdInputNumber(props) {
 }
 function AntdSelect(props) {
   const { field, label, mode, options, width } = props;
-  const { value, name } = field;
+  const { value, name, onChange } = field;
   const handleChange = (value) => {
-    const changeEvent = {
+    const customEvent = {
       target: {
         name: name,
         value: value,
       },
     };
-    field.onChange(changeEvent);
+    onChange(customEvent);
   };
   return (
     <>

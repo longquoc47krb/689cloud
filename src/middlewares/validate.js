@@ -16,7 +16,7 @@ const validateUserForm = Yup.object().shape({
         yupSchema.min(contractStart, "Min date is contract start")
     ),
   id: Yup.number().required("Required"),
-  suspension: Yup.number().required("Required"),
+  suspension: Yup.string().required("Required"),
   password: Yup.string()
     .required("Required")
     .min(8, "Min length 8")
