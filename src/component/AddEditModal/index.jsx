@@ -50,16 +50,20 @@ const AddEditUserModal = (props) => {
   }, [selectedData]);
   function saveEmailInfo() {
     if (!errors.email) {
-      setFieldValue("email", formik.values.email);
       dispatch(setDisabled());
+      setEmail(values.email);
+      setTempEmail(values.email);
     }
   }
   function cancelEmailInfo() {
     setTempEmail(email);
     dispatch(setDisabled());
-    setFieldValue("email", email);
+    setFieldValue("email", tempEmail);
   }
   console.log("formik", values.email);
+  console.log("email", email);
+  console.log("tempEmail", tempEmail);
+
   return (
     <Modal
       title={title}

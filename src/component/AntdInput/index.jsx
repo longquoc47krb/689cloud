@@ -3,6 +3,8 @@ import { Button, DatePicker, Form, Input, Select } from "antd";
 import MaskedInput from "antd-mask-input";
 import { ErrorMessage } from "formik";
 import React from "react";
+import { AiFillSave } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 const { Item } = Form;
 const { Option } = Select;
 function AntdInput(props) {
@@ -86,31 +88,47 @@ function AntdInputGroup(props) {
             onChange={handleChange}
             style={
               !disabled
-                ? { width: "calc(100% - 165px)" }
-                : { width: "calc(100% - 81px)" }
+                ? { width: "calc(100% - 140px" }
+                : { width: "calc(100% - 70px)" }
             }
           />
           {!disabled ? (
-            <>
+            <div className='flex'>
               <Button
                 danger
                 type='primary'
-                style={{ width: 80 }}
+                style={{
+                  width: 70,
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 5,
+                }}
                 onClick={onCancelClick}>
+                <ImCross />
                 Cancel
               </Button>
               <Button
                 type='primary'
-                style={{ width: 80 }}
+                style={{
+                  width: 70,
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 5,
+                }}
                 onClick={onSaveClick}>
+                <AiFillSave />
                 Save
               </Button>
-            </>
+            </div>
           ) : (
             <>
               <Button
                 type='primary'
-                style={{ width: 80 }}
+                style={{ width: 70, textAlign: "center" }}
                 onClick={onChangeClick}>
                 Change
               </Button>
