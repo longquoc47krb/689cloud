@@ -23,8 +23,7 @@ const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
   // const [email, setEmail] = useState("example@689cloud.com");
   const disabled = useSelector((state) => state.modal.disabled);
-  const email = useSelector((state) => state.modal.selectedData.email);
-  console.log("email", email);
+  const [email, setEmail] = useState("example@689cloud.com");
   const [tempEmail, setTempEmail] = useState(email);
   const dispatch = useDispatch();
   const initialValues = {
@@ -45,19 +44,22 @@ const AddEditUserModal = (props) => {
   const handleCancel = () => {
     dispatch(resetModal());
   };
-  const { setValues, setFieldValue } = formik;
+  const { setValues, setFieldValue, values, errors } = formik;
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
   function saveEmailInfo() {
-    setFieldValue("email", formik.values.email);
-    dispatch(handleSaveCancel({ email: formik.values.email }));
+    if (!errors.email) {
+      setFieldValue("email", formik.values.email);
+      dispatch(setDisabled());
+    }
   }
   function cancelEmailInfo() {
     setTempEmail(email);
-    dispatch(handleSaveCancel({ email: email }));
+    dispatch(setDisabled());
     setFieldValue("email", email);
   }
+  console.log("formik", values.email);
   return (
     <Modal
       title={title}

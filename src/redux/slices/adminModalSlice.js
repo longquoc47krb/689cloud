@@ -20,10 +20,6 @@ const adminModalSlice = createSlice({
     setDisabled: (state, action) => {
       state.disabled = !state.disabled;
     },
-    handleSaveCancel: (state, action) => {
-      state.disabled = !state.disabled;
-      state.selectedData = { ...action.payload, email: action.payload.email };
-    },
     setSelectedData: (state, action) => {
       state.selectedData = action.payload;
     },
@@ -40,11 +36,6 @@ const adminModalSlice = createSlice({
   },
 });
 
-export const {
-  openAddModal,
-  openEditModal,
-  resetModal,
-  setDisabled,
-  handleSaveCancel,
-} = adminModalSlice.actions;
+export const { openAddModal, openEditModal, resetModal, setDisabled } =
+  adminModalSlice.actions;
 export default adminModalSlice.reducer;
