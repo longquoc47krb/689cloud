@@ -6,7 +6,6 @@ const initialState = {
   selectedData: {
     email: "example@689cloud.com",
   },
-  disabled: true,
 };
 const adminModalSlice = createSlice({
   name: "modal",
@@ -16,9 +15,6 @@ const adminModalSlice = createSlice({
       state.toggle = true;
       state.isEditting = false;
       state.selectedData = {};
-    },
-    setDisabled: (state, action) => {
-      state.disabled = !state.disabled;
     },
     setSelectedData: (state, action) => {
       state.selectedData = action.payload;
@@ -36,6 +32,6 @@ const adminModalSlice = createSlice({
   },
 });
 
-export const { openAddModal, openEditModal, resetModal, setDisabled } =
+export const { openAddModal, openEditModal, resetModal } =
   adminModalSlice.actions;
 export default adminModalSlice.reducer;

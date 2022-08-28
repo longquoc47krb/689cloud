@@ -5,21 +5,22 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { validateUserForm } from "../../middlewares/validate";
 import { AntdDatePicker, AntdInput, AntdInputGroup } from "../AntdInput";
-import { resetModal, setDisabled } from "../../redux/slices/adminModalSlice";
+import { resetModal } from "../../redux/slices/adminModalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditData } from "../../redux/slices/editDataSlice";
 
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
-  const disabled = useSelector((state) => state.modal.disabled);
+  // editDataSlice
+  const tempData = useSelector((state) => state.edit.editData);
   const email = useSelector((state) => state.edit.editData.email);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       setEditData({
         email: {
-          ...email,
           temp: email.value,
+          ...email,
         },
       })
     );
@@ -47,32 +48,44 @@ const AddEditUserModal = (props) => {
     setValues(initialValues);
   }, [selectedData]);
 
-  function saveInfo(key) {
+  function onClickSave(key) {
     if (!errors[key]) {
-      dispatch(setDisabled());
       dispatch(
         setEditData({
           [key]: {
             temp: values[key],
             value: values[key],
+            disabled: true,
           },
         })
       );
     }
   }
-  function cancelEdit(key, obj) {
+  function onClickCancel(key, obj) {
     const object = Object.assign({}, obj);
     dispatch(
       setEditData({
         [key]: {
           temp: object.value,
           ...object,
+          disabled: true,
         },
       })
     );
-    dispatch(setDisabled());
     setFieldValue(key, obj.temp);
   }
+  function onClickChange(key, obj) {
+    const object = Object.assign({}, obj);
+    dispatch(
+      setEditData({
+        [key]: {
+          ...object,
+          disabled: false,
+        },
+      })
+    );
+  }
+  console.log({ email, ...tempData });
   return (
     <Modal
       title={title}
@@ -102,10 +115,10 @@ const AddEditUserModal = (props) => {
                 component={AntdInputGroup}
                 label='Email'
                 name='email'
-                disabled={disabled}
-                onCancelClick={() => cancelEdit("email", email)}
-                onChangeClick={() => dispatch(setDisabled())}
-                onSaveClick={() => saveInfo("email")}
+                disabled={email.disabled}
+                onClickCancel={() => onClickCancel("email", email)}
+                onClickChange={() => onClickChange("email", email)}
+                onClickSave={() => onClickSave("email")}
               />
               <FastField component={AntdInput} label='Param 03' name='param3' />
               <FastField component={AntdInput} label='Param 05' name='param5' />
@@ -127,7 +140,7 @@ const AddEditUserModal = (props) => {
           </Row>
           <Row gutter={[48, 40]} className='leading-8'>
             <Col span={24}>
-              <span className='dividing-line text-[18px] font-normal text-text-color'>
+              <span className='title text-[18px] text-text-color'>
                 Authentication (Optional)
               </span>
             </Col>

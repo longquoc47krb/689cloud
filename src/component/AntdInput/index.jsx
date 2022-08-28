@@ -56,9 +56,9 @@ function AntdInputGroup(props) {
     uppercase,
     onChange: onChangeCustom,
     disabled,
-    onSaveClick,
-    onCancelClick,
-    onChangeClick,
+    onClickSave,
+    onClickCancel,
+    onClickChange,
   } = props;
   const { value, onChange, onBlur, name } = field;
   const handleChange = (e) => {
@@ -105,7 +105,7 @@ function AntdInputGroup(props) {
                   justifyContent: "center",
                   padding: 5,
                 }}
-                onClick={onCancelClick}>
+                onClick={onClickCancel}>
                 <ImCross />
                 Cancel
               </Button>
@@ -120,7 +120,7 @@ function AntdInputGroup(props) {
                   justifyContent: "center",
                   padding: 5,
                 }}
-                onClick={onSaveClick}>
+                onClick={onClickSave}>
                 <AiFillSave />
                 Save
               </Button>
@@ -131,7 +131,7 @@ function AntdInputGroup(props) {
                 type='primary'
                 name={name}
                 style={{ width: 70, textAlign: "center" }}
-                onClick={onChangeClick}>
+                onClick={onClickChange}>
                 Change
               </Button>
             </>
