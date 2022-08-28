@@ -1,31 +1,29 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Col, Modal, Row, Form, Input, Button } from "antd";
-import {
-  FastField,
-  Field,
-  FormikProvider,
-  useFormik,
-  ErrorMessage,
-} from "formik";
+/* eslint-disable */
+import { Col, Form, Modal, Row } from "antd";
+import { FastField, Field, FormikProvider, useFormik } from "formik";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
 import { validateUserForm } from "../../middlewares/validate";
-import {
-  setDisabled,
-  resetModal,
-  handleSaveCancel,
-} from "../../redux/slices/adminModalSlice";
 import { AntdDatePicker, AntdInput, AntdInputGroup } from "../AntdInput";
+import { resetModal, setDisabled } from "../../redux/slices/adminModalSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditData } from "../../redux/slices/editDataSlice";
+
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
-  // const [email, setEmail] = useState("example@689cloud.com");
   const disabled = useSelector((state) => state.modal.disabled);
-  const [email, setEmail] = useState("example@689cloud.com");
-  const [tempEmail, setTempEmail] = useState(email);
+  const emailStates = useSelector((state) => state.edit.editData.email);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      setEditData({
+        email: {
+          ...emailStates,
+          temp: emailStates.value,
+        },
+      })
+    );
+  }, []);
   const initialValues = {
     id: selectedData?.id ?? "",
     name: selectedData?.name ?? "",
@@ -33,7 +31,7 @@ const AddEditUserModal = (props) => {
     contractStart: moment(selectedData.contractStart) ?? moment(),
     contractEnd: moment(selectedData.contractEnd) ?? moment(),
     password: selectedData?.password ?? "",
-    email: selectedData?.email ?? email,
+    email: selectedData?.email ?? emailStates.value,
   };
   // formik
   const formik = useFormik({
@@ -48,21 +46,33 @@ const AddEditUserModal = (props) => {
   useEffect(() => {
     setValues(initialValues);
   }, [selectedData]);
-  function saveEmailInfo() {
+
+  function saveInfo(name) {
     if (!errors.email) {
       dispatch(setDisabled());
-      setEmail(values.email);
-      setTempEmail(values.email);
+      dispatch(
+        setEditData({
+          email: {
+            temp: values.email,
+            value: values.email,
+          },
+        })
+      );
     }
   }
-  function cancelEmailInfo() {
-    setTempEmail(email);
+
+  function cancelEdit() {
+    dispatch(
+      setEditData({
+        email: {
+          temp: emailStates.value,
+          ...emailStates,
+        },
+      })
+    );
     dispatch(setDisabled());
-    setFieldValue("email", tempEmail);
+    setFieldValue("email", emailStates.temp);
   }
-  console.log("formik", values.email);
-  console.log("email", email);
-  console.log("tempEmail", tempEmail);
 
   return (
     <Modal
@@ -75,7 +85,7 @@ const AddEditUserModal = (props) => {
         <Form>
           <Row gutter={[48, 40]} className='leading-8'>
             <Col span={12}>
-              <FastField
+              <Field
                 name='name'
                 component={AntdInput}
                 label='Name'
@@ -94,9 +104,9 @@ const AddEditUserModal = (props) => {
                 label='Email'
                 name='email'
                 disabled={disabled}
-                onCancelClick={cancelEmailInfo}
+                onCancelClick={cancelEdit}
                 onChangeClick={() => dispatch(setDisabled())}
-                onSaveClick={saveEmailInfo}
+                onSaveClick={saveInfo}
               />
               <FastField component={AntdInput} label='Param 03' name='param3' />
               <FastField component={AntdInput} label='Param 05' name='param5' />
@@ -118,7 +128,7 @@ const AddEditUserModal = (props) => {
           </Row>
           <Row gutter={[48, 40]} className='leading-8'>
             <Col span={24}>
-              <span className='dividing-line text-[18px] font-normal  text-text-color'>
+              <span className='dividing-line text-[18px] font-normal text-text-color'>
                 Authentication (Optional)
               </span>
             </Col>

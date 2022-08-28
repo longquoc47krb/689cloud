@@ -6,8 +6,7 @@ const initialState = {
   selectedData: {
     email: "example@689cloud.com",
   },
-
-  disabled: false,
+  disabled: true,
 };
 const adminModalSlice = createSlice({
   name: "modal",
