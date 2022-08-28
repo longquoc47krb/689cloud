@@ -12,14 +12,14 @@ import { setEditData } from "../../redux/slices/editDataSlice";
 const AddEditUserModal = (props) => {
   const { title, selectedData, open } = props;
   const disabled = useSelector((state) => state.modal.disabled);
-  const emailStates = useSelector((state) => state.edit.editData.email);
+  const email = useSelector((state) => state.edit.editData.email);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       setEditData({
         email: {
-          ...emailStates,
-          temp: emailStates.value,
+          ...email,
+          temp: email.value,
         },
       })
     );
@@ -31,7 +31,7 @@ const AddEditUserModal = (props) => {
     contractStart: moment(selectedData.contractStart) ?? moment(),
     contractEnd: moment(selectedData.contractEnd) ?? moment(),
     password: selectedData?.password ?? "",
-    email: selectedData?.email ?? emailStates.value,
+    email: selectedData?.email ?? email.value,
   };
   // formik
   const formik = useFormik({
@@ -47,33 +47,32 @@ const AddEditUserModal = (props) => {
     setValues(initialValues);
   }, [selectedData]);
 
-  function saveInfo(name) {
-    if (!errors.email) {
+  function saveInfo(key) {
+    if (!errors[key]) {
       dispatch(setDisabled());
       dispatch(
         setEditData({
-          email: {
-            temp: values.email,
-            value: values.email,
+          [key]: {
+            temp: values[key],
+            value: values[key],
           },
         })
       );
     }
   }
-
-  function cancelEdit() {
+  function cancelEdit(key, obj) {
+    const object = Object.assign({}, obj);
     dispatch(
       setEditData({
-        email: {
-          temp: emailStates.value,
-          ...emailStates,
+        [key]: {
+          temp: object.value,
+          ...object,
         },
       })
     );
     dispatch(setDisabled());
-    setFieldValue("email", emailStates.temp);
+    setFieldValue(key, obj.temp);
   }
-
   return (
     <Modal
       title={title}
@@ -104,9 +103,9 @@ const AddEditUserModal = (props) => {
                 label='Email'
                 name='email'
                 disabled={disabled}
-                onCancelClick={cancelEdit}
+                onCancelClick={() => cancelEdit("email", email)}
                 onChangeClick={() => dispatch(setDisabled())}
-                onSaveClick={saveInfo}
+                onSaveClick={() => saveInfo("email")}
               />
               <FastField component={AntdInput} label='Param 03' name='param3' />
               <FastField component={AntdInput} label='Param 05' name='param5' />

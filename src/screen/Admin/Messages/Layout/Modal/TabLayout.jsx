@@ -33,7 +33,6 @@ const TabLayout = (props) => {
   useEffect(() => {
     setFieldValue("searchFields", searchFields);
   }, [searchFields]);
-  console.log("fomik", formik.values);
   const SearchBoxBoards = {
     first: constants.searchBoxItems,
     second: [],

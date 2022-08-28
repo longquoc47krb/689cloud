@@ -14,7 +14,6 @@ const editDataSlice = createSlice({
   reducers: {
     setEditData: (state, action) => {
       state.editData = action.payload;
-      console.log("action.payload", action.payload);
     },
   },
 });

@@ -20,8 +20,6 @@ export function DragAndDrop({ items }) {
   useEffect(() => {
     dispatch(setSelectedSearchBoxItems(items.second));
   }, []);
-  // const selectedItem = searchFields?.find((item) => item.key === selectedId);
-  // console.log("selectedItem", selectedItem);
   function onDragEnd(result) {
     if (
       result.source.droppableId === "second-droppable" &&

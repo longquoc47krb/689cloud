@@ -60,7 +60,6 @@ function AntdInputGroup(props) {
     onCancelClick,
     onChangeClick,
   } = props;
-  console.log("disabled", disabled);
   const { value, onChange, onBlur, name } = field;
   const handleChange = (e) => {
     const { value } = e.target;
@@ -95,6 +94,7 @@ function AntdInputGroup(props) {
           {!disabled ? (
             <div className='flex'>
               <Button
+                name={name}
                 danger
                 type='primary'
                 style={{
@@ -111,6 +111,7 @@ function AntdInputGroup(props) {
               </Button>
               <Button
                 type='primary'
+                name={name}
                 style={{
                   width: 70,
                   textAlign: "center",
@@ -128,6 +129,7 @@ function AntdInputGroup(props) {
             <>
               <Button
                 type='primary'
+                name={name}
                 style={{ width: 70, textAlign: "center" }}
                 onClick={onChangeClick}>
                 Change

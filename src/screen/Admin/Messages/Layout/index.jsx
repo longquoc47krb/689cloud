@@ -15,11 +15,7 @@ const Layout = () => {
   const [tabData, setTabData] = useState([]);
   const { t } = useTranslation();
   useEffect(() => {
-    const fetchSearchBox = async () => {
-      // const res = await fetch("http://localhost:8000/messages");
-      // setTabData(res[0].tabs);
-      // console.log("res", res);
-    };
+    const fetchSearchBox = async () => {};
     fetchSearchBox();
   }, []);
   const onDelete = (record) => {
