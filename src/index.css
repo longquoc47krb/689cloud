@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+#components-layout-demo-top-side-2 .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-row-rtl #components-layout-demo-top-side-2 .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.site-layout-background {
+  background: #83889c;
+}
+.ant-layout-header {
+  background: white !important;
+  padding: 0 1rem !important;
+}
+.ant-switch-checked {
+  background: rgb(0, 255, 0) !important;
+}
+.ant-layout {
+  display: flex;
+  justify-content: center;
+}
+.ant-modal-header {
+  background: #83889c !important;
+  height: 53px;
+}
+.ant-modal-header .ant-modal-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+}
+.ant-modal-close-x {
+  visibility: hidden;
+}
+.ant-select-selector {
+  padding: 5px !important;
+}
+.error-message {
+  color: red;
+  line-height: 1rem !important;
+}
+.rdw-suggestion-option {
+  width: 200px !important;
+}
+.ant-table-row .ant-table-row-level-0:nth-child(even) {
+  background-color: #e2e2e2;
+}
+/* custom color button antd */
+.antd-button {
+  background: #839c97 !important;
+}
+#authentication-text {
+  position: relative;
+}
+#authentication-text:after {
+  position: absolute;
+  content: "";
+  height: 1px;
+  background-color: #73879c;
+  width: 320px;
+  margin-left: 1rem;
+  top: 50%;
+}
+@layer components {
+  .title {
+    @apply text-[#73879C] font-medium text-lg;
+  }
+  .button {
+    @apply font-bold text-lg px-8 py-2;
+  }
+}
